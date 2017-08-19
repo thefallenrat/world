@@ -4,8 +4,8 @@
 # Contributor: Pierre Schmitz <pierre@archlinux.de>
 
 pkgname=apache
-pkgver=2.4.26
-pkgrel=2
+pkgver=2.4.27
+pkgrel=1
 pkgdesc='A high performance Unix-based HTTP server'
 arch=('i686' 'x86_64')
 url='http://www.apache.org/dist/httpd'
@@ -31,9 +31,9 @@ source=(
     openssl-malloc-init.patch
     apache.tmpfiles.conf
     httpd.logrotate
-    cromnix.layout
+    artix.layout
 )
-sha256sums=('a07eb52fafc879e0149d31882f7da63173e72df4478db4dc69f7a775b663d387'
+sha256sums=('71fcc128238a690515bd8174d5330a5309161ef314a326ae45c7c15ed139c13a'
             'SKIP'
             'd305f8b52ac2a9bbda7bb0776496471e69e9d30642740f594d00086a8c7e344c'
             '63da1a420f4714a3e7af2672d28384419cc7eedbe7bf35baebd02938fabc15bf'
@@ -49,7 +49,7 @@ prepare() {
       -e 's#Group daemon#Group http#' \
       -i docs/conf/httpd.conf.in
 
-  cat "${srcdir}/cromnix.layout" >> config.layout
+  cat "${srcdir}/artix.layout" >> config.layout
 
   # https://github.com/openssl/openssl/issues/2865
   patch -Np1 -i ../openssl-malloc-init.patch
