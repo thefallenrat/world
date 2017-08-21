@@ -18,20 +18,12 @@ source=("https://ftp.heanet.ie/mirrors/mariadb/mariadb-$pkgver/source/mariadb-$p
         'mariadb-tmpfile.conf')
 sha256sums=('ba88b1cb9967dea2909938a34ba89373b162b0d83e5c98a0f1c94540156bf73d'
             'SKIP'
-            '41d80d3ff78251bd3e05ed5c40b63e4ac71153832a00c86443be5a111daad354'
+            '40d298ca77c0459ade4ef9fc68a3a7450273b098b9f7edfb0a5251c5db434cfc'
             'e1a22777c65854041f16fc0a2db3218d17b4d7e7ec7ab7a77cf49c71277c1515'
             '2af318c52ae0fe5428e8a9245d1b0fc3bc5ce153842d1563329ceb1edfa83ddd')
 
 prepare() {
   cd $pkgbase-$pkgver/
-
-  # Changes to the upstream unit files:
-  #  * remove the alias from unit files, we install symlinks in package function
-  #  * enable PrivateTmp for a little bit more security
-#   sed -i -e '/^Alias/d' \
-#     -e '/^PrivateTmp/c PrivateTmp=true' \
-#     support-files/mariadb{,@}.service.in
-
   # openssl 1.1.0
   patch -Np1 < "${srcdir}"/0001-openssl-1-1-0.patch
 }
