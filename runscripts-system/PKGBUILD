@@ -1,4 +1,4 @@
-# Maintainer: artoo <artoo@cromnix.org>
+# Maintainer: Muhammad Herdiansyah <herdiansyah@netc.eu>
 
 _url="https://github.com/voidlinux/void-packages/raw/master/srcpkgs"
 
@@ -34,23 +34,17 @@ pkgrel=1
 pkgdesc="Run scripts for services"
 arch=('any')
 url="https://github.com/cromnix/artix"
-license=('GPL2')
+license=('BSD3')
 groups=('runscripts-system')
 conflicts=('systemd-sysvcompat')
 source=(
         "cronie.run::${_url}/cronie/files/cronie/run"
-#        "dmcrypt.run::${_url}/sys-fs/cryptsetup/files/1.6.7-dmcrypt.rc"
         "nscd.run::${_url}/glibc/files/nscd/run"
-#        "device-mapper.run::${_url}/sys-fs/lvm2/files/device-mapper.rc-2.02.105-r2"
         "dmeventd.run::${_url}/lvm2/files/dmeventd/run"
-#        "lvm.run::${_url}/sys-fs/lvm2/files/lvm.rc-2.02.172"
-#        "lvm-monitoring.run::${_url}/sys-fs/lvm2/files/lvm-monitoring.initd-2.02.105-r2"
         "lvmetad.run::${_url}/lvm2/files/lvmetad/run"
-#         "lvmlockd.run::${_url}/sys-fs/lvm2/files/lvmlockd.initd-2.02.166-r1"
         "mdadm.run::${_url}/mdadm/files/mdadm/run"
-#        "mdraid.run::${_url}/sys-fs/mdadm/files/mdraid.rc"
         "dhcpcd.run::${_url}/dhcpcd/files/dhcpcd/run"
-        "dbus.run::${_url}/dbus/files/dbus/run"
+        "dbus.run"
         "dbus.check::${_url}/dbus/files/dbus/check"
 #        'ftpd.run'
         "nfs-server.run::${_url}/nfs-utils/files/nfs-server/run"
@@ -60,19 +54,13 @@ source=(
         "elogind.run::${_url}/elogind/files/elogind.wrapper"
         "udevd.run::${_url}/eudev/files/udevd/run"
         "gpm.run::${_url}/gpm/files/gpm/run"
-#        "hdparm.run::${_url}/sys-apps/hdparm/files/hdparm-init-8"
-#        "openvpn.run::${_url}/net-vpn/openvpn/files/openvpn-2.1.init"
         "sshd.run::${_url}/openssh/files/sshd/run"
         "slapd.run::${_url}/openldap/files/slapd/run"
         "iptables.run::${_url}/iptables/files/iptables/run"
         "ip6tables.run::${_url}/iptables/files/ip6tables/run"
-#        "krb5kadmind.run::${_url}/app-crypt/mit-krb5/files/mit-krb5kadmind.run-r2"
-#        "krb5kdc.run::${_url}/app-crypt/mit-krb5/files/mit-krb5kdc.run-r2"
-#        "krb5kpropd.run::${_url}/app-crypt/mit-krb5/files/mit-krb5kpropd.run-r2"
         "wpa_supplicant.run::${_url}/wpa_supplicant/files/wpa_supplicant/run"
         "https://github.com/gentoo/gentoo/raw/master/net-wireless/wpa_supplicant/files/wpa_cli.sh"
         "xinetd.run::${_url}/xinetd/files/xinetd/run"
-#        'kmod-static-nodes.run'
 )
 
 pkgver() {
@@ -91,8 +79,8 @@ _inst_sv(){
 package_cronie-runscripts() {
     pkgdesc="Run script for cronie"
     depends=('cronie')
-    provides=('runscripts-cron')
-    conflicts=('fcron' 'fcron-openrc' 'systemd-sysvcompat')
+    provides=('runit-cron')
+    conflicts=('fcron' 'fcron-runscripts' 'systemd-sysvcompat')
     backup=('etc/sv/cronie')
 
     _inst_sv 'cronie'
@@ -116,18 +104,10 @@ package_dhcpcd-runscripts() {
 
 package_device-mapper-runscripts() {
     pkgdesc="Run script for device-mapper"
-    depends=('device-mapper' 'eudev-openrc')
+    depends=('device-mapper' 'runit-artix')
 
-    _inst_sv 'device-mapper'
     _inst_sv 'dmeventd'
 }
-
-#package_cryptsetup-runscripts() {
-#    pkgdesc="Run script for cryptsetup"
-#    depends=('device-mapper-openrc' 'cryptsetup')
-#
-#    _inst_sv 'dmcrypt'
-#}
 
 package_glibc-runscripts() {
     pkgdesc="Run script for nscd"
@@ -136,40 +116,18 @@ package_glibc-runscripts() {
     _inst_sv 'nscd'
 }
 
-#package_inetutils-runscripts() {
-#    pkgdesc="Run script for ftpd"
-#    depends=('inetutils')
-#
-#    _inst_sv 'ftpd'
-#}
-
-#package_kmod-runscripts() {
-#    pkgdesc="Run script for nscd"
-#    depends=('kmod')
-#
-#    _inst_sv 'kmod-static-nodes'
-#
-#    install -d "${pkgdir}/etc/runlevels/sysinit"
-#    ln -sf "/etc/sv/kmod-static-nodes" "${pkgdir}/etc/runlevels/sysinit/kmod-static-nodes"
-#}
-
 package_lvm2-runscripts() {
-    pkgdesc="Run script for lvm2"
-    depends=('device-mapper-openrc' 'lvm2')
+	pkgdesc="Run script for lvm2 (lvmetad)"
+    depends=('lvm2')
 
-
-    for f in lvm lvm-monitoring lvmetad; do
-        _inst_sv "$f"
-    done
+    _inst_sv "lvmetad"
 }
 
 package_mdadm-runscripts() {
     pkgdesc="Run script for mdadm"
     depends=('mdadm')
 
-    for f in mdadm mdraid;do
-        _inst_sv $f
-    done
+    _inst_sv "mdadm"
 }
 
 package_syslog-ng-runscripts() {
@@ -191,7 +149,7 @@ package_rpcbind-runscripts() {
 
 package_nfs-utils-runscripts() {
     pkgdesc="Run script for nfs-utils"
-    depends=('nfs-utils' 'rpcbind-openrc' 'device-mapper-openrc')
+	depends=('nfs-utils' 'rpcbind-runscripts' 'device-mapper-runscripts')
 
     for f in nfs-server;do
         _inst_sv $f
@@ -204,8 +162,7 @@ package_nfs-utils-runscripts() {
 
 package_elogind-runscripts() {
     pkgdesc="Run script for elogind"
-    depends=('elogind' 'dbus-openrc' 'eudev-openrc')
-    groups=('openrc-system' 'base')
+    depends=('elogind' 'dbus-runscripts' 'runit-artix')
 
     _inst_sv 'elogind'
 }
@@ -216,13 +173,6 @@ package_gpm-runscripts() {
 
     _inst_sv 'gpm'
 }
-
-#package_hdparm-runscripts() {
-#    pkgdesc="Run script for hdparm"
-#    depends=('hdparm')
-#
-#    _inst_sv 'hdparm'
-#}
 
 package_openldap-runscripts() {
     pkgdesc="Run script for openldap"
@@ -241,13 +191,6 @@ package_openssh-runscripts() {
     _inst_sv 'sshd'
 }
 
-#package_openvpn-runscripts() {
-#    pkgdesc="Run script for openvpn"
-#    depends=('openvpn')
-#
-#    _inst_sv 'openvpn'
-#}
-
 package_iptables-runscripts() {
     pkgdesc="Run script for iptables"
     depends=('iptables')
@@ -255,21 +198,6 @@ package_iptables-runscripts() {
     _inst_sv 'iptables'
     _inst_sv 'ip6tables'
 }
-
-#package_krb5-runscripts() {
-#    pkgdesc="Run script for krb5"
-#    depends=('krb5')
-#
-#    for f in krb5kadmind krb5kdc krb5kpropd;do
-#        _inst_sv $f
-#    done
-#
-#    for f in ${pkgdir}/etc/sv/krb5*/*;do
-#        sed -e 's|mit-krb5kdc|krb5kdc|g' \
-#            -e 's|mit-krb5kadmind|krb5kadmind|g' \
-#            -i $f
-#    done
-#}
 
 package_wpa_supplicant-runscripts() {
     pkgdesc="Run script for wpa_supplicant"
@@ -300,13 +228,13 @@ sha256sums=('3ea09bc7b3753cf8ef764dd2ff8cec5cdd781deac441965e8a7238ce0c4c55d9'
             'ed490eab75c0ff3e2d9f1802c47478198725e9b16cfd03392f7f03d2d65b6fc2'
             '651ab1a6b9a643bfd725c43cbac28cf0299d9b9caaf583f3c33787b48e2c86d7'
             '49328dc461852111f343f95aeb132f26d116f1cd698c7600f7b0cd6ca21700ec'
-            'b7012df029f0fd44fc77f42347a8fcf144d168be42aa6dcd1ac7973300b9c5d0'
+            'e515f1ace10b4e89967098794a1e704d4fa954d61dfe065f7e05f4842aebd66d'
             'e81ca5cc47200a2f4df2463a46316c7a8f9f462a1f7c9579cfeca0d970921863'
             '75a2d1228115f5bb6ff26530dbb60cc37a0ea82d03c1f19d37b5460a295afff1'
             '6cae89df8cd52c196b25457a9603423353013f85daf99f33465129437d470ac2'
             'f28e0b3e65534dd0776f243a596dc5300d59ee3f58f1181c1564eadd0b7fb1fd'
             '1f3005344868b25a791bb470ba68e03e008f4755f2e0d59a5e3e8728a63b8a05'
-            '3a4a4b85b4cfd3ff9e3fb738ea0da5a9da286c2ba0f3bfd0a0cfef818c4ade9e'
+            'c7f062f5f126ec5f9cc1b3117a2b981c8d0ea6f8f284690dc764f4749359ee28'
             '78bca25f04b157d6997c6480de9a23d2a65284b3362f20338b23455b9ec1214f'
             '2d738d975256c17833b16946723b49ca02b1346b1e81d1fe1aee5dd864804e81'
             '220dde8d4495bab6f08e063860c0ad54cc70ef8b7913a00e27126f1d5eb0af5f'
