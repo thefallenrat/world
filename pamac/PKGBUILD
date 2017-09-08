@@ -3,7 +3,7 @@
 
 pkgbase=pamac
 pkgname=('pamac' 'pamac-tray-appindicator')
-pkgver=5.1.0
+pkgver=5.1.1
 _pkgver=5.1.0
 pkgrel=1
 pkgdesc="A Gtk3 frontend for libalpm"
@@ -15,18 +15,18 @@ depends=('glib2>=2.42' 'json-glib' 'libsoup' 'dbus-glib' 'polkit' 'vte3>=0.38' '
 makedepends=('gettext' 'itstool' 'vala>=0.36' 'libappindicator-gtk3')
 options=(!emptydirs)
 
-source=("pamac-$pkgver-$pkgrel.tar.gz::$url/archive/v$_pkgver.tar.gz")
-sha256sums=('ea73ed11bc42992c5ae05fe636586ba347946b73a482c1c50c0857470bcbf984')
+source=("pamac-$pkgver-$pkgrel.tar.gz::$url/archive/v$pkgver.tar.gz")
+sha256sums=('edb3cf635ae94da9ae87f9feafd836e264b24bdf1e7a07396abd4e062f29b0f1')
 
 prepare() {
   # adjust version string
-  cd "$srcdir/pamac-$_pkgver"
-  sed -i -e "s|\"$pkgver\"|\"$pkgver-$pkgrel\"|g" src/manager_window.vala
+  cd "$srcdir/pamac-$pkgver"
+  sed -i -e "s|\"$_pkgver\"|\"$pkgver-$pkgrel\"|g" src/manager_window.vala
   # patches here
 }
 
 build() {
-  cd "$srcdir/pamac-$_pkgver"
+  cd "$srcdir/pamac-$pkgver"
 
   # build
   make all
@@ -39,14 +39,14 @@ package_pamac() {
   backup=('etc/pamac.conf')
   replaces=('pamac-aur')
   install=pamac.install
-  cd "$srcdir/pamac-$_pkgver"
+  cd "$srcdir/pamac-$pkgver"
   make prefix="$pkgdir"/usr sysconfdir="$pkgdir"/etc install
 }
 
 package_pamac-tray-appindicator() {
   pkgdesc="Tray icon using appindicator which feets better in KDE"
   depends=('pamac' 'libappindicator-gtk3')
-  cd "$srcdir/pamac-$_pkgver"
+  cd "$srcdir/pamac-$pkgver"
   make use_appindicator=true
   make prefix="$pkgdir"/usr sysconfdir="$pkgdir"/etc install_pamac-tray-appindicator
 }
