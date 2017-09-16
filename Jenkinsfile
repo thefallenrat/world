@@ -43,7 +43,11 @@ pipeline {
             }
             steps {
                 sh '''
-                    ${BUILDPKG} -p ${PACKAGE} -z ${REPO}
+                    ARGS=()
+                    case ${PACKAGE} in
+                        llvm) ARGS+=(-a multilib) ;;
+                    esac
+                    ${BUILDPKG} -p ${PACKAGE} -z ${REPO} "${ARGS[@]}"
                 '''
             }
             post {
