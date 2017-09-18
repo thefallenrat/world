@@ -1,7 +1,7 @@
 # Maintainer: artoo <artoo@cromnix.org>
 # Contributor: Philip Müller <philm[at]manjaro[dog]org>
 
-_commit=41281849b2c716a70856cc3a0c22452819e3732a
+_commit=3984ddc62700cd59cf5d393c70048dde5c8c31e1
 
 pkgname=calamares
 pkgver=3.1.1
@@ -12,7 +12,7 @@ license=(GPL)
 url="https://github.com/artix-linux/calamares"
 license=('LGPL')
 depends=('kconfig' 'kcoreaddons' 'ki18n' 'solid' 'yaml-cpp' 'kpmcore>=3.1.0'
-         'boost-libs' 'hwinfo' 'qt5-svg' 'polkit-qt5' 'gtk-update-icon-cache' 'pythonqt')
+         'boost-libs' 'hwinfo' 'qt5-svg' 'polkit-qt5' 'gtk-update-icon-cache')
 makedepends=('extra-cmake-modules' 'qt5-tools' 'qt5-translations' 'boost')
 backup=('usr/share/calamares/modules/bootloader.conf'
         'usr/share/calamares/modules/displaymanager.conf'
@@ -20,7 +20,7 @@ backup=('usr/share/calamares/modules/bootloader.conf'
         'usr/share/calamares/modules/unpackfs.conf')
 
 source=("$pkgname-$pkgver.tar.gz::https://github.com/artix-linux/calamares/archive/${_commit}.tar.gz")
-sha256sums=('63e3b23f0517fcd3d60dcd82449936ccf5f4d9c44a7a26538c108a80504b9561')
+sha256sums=('c6b796f554c5a3bfa33e340a28880ec4716e0cb5c0b4db1a49742fc01361d300')
 
 # pkgver() {
 #     cd $pkgname
