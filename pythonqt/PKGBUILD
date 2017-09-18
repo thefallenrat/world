@@ -15,12 +15,14 @@ source=("http://downloads.sourceforge.net/project/${pkgname}/${pkgname}/PythonQt
 md5sums=('5294193b79137d432d785aab1ec61da7')
 
 prepare() {
+        msg2 "Preparing sources..."
         cd "${srcdir}/PythonQt${pkgver}"
         echo $(ls -l)
         sed -i "/unix:PYTHON_VERSION=/s/2.7/3/" build/python.prf
 }
 
 build() {
+        msg2 "Building libraries..."
         cd "${srcdir}/PythonQt${pkgver}"
         qmake-qt5 \
             QMAKE_CFLAGS="${CFLAGS}" \
