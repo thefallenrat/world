@@ -4,7 +4,7 @@
 pkgbase=mariadb
 pkgname=('libmariadbclient' 'mariadb-clients' 'mytop' 'mariadb')
 pkgver=10.1.26
-pkgrel=1
+pkgrel=2
 arch=('i686' 'x86_64')
 license=('GPL')
 url='http://mariadb.org/'
@@ -14,12 +14,14 @@ validpgpkeys=('199369E5404BD5FC7D2FE43BCBCB082A1BB943DB') # MariaDB Package Sign
 source=("https://ftp.heanet.ie/mirrors/mariadb/mariadb-$pkgver/source/mariadb-$pkgver.tar.gz"{,.asc}
         '0001-openssl-1-1-0.patch'
         'mariadb-sysusers.conf'
-        'mariadb-tmpfile.conf')
+        'mariadb-tmpfile.conf'
+        'my.cnf')
 sha256sums=('ba88b1cb9967dea2909938a34ba89373b162b0d83e5c98a0f1c94540156bf73d'
             'SKIP'
             '40d298ca77c0459ade4ef9fc68a3a7450273b098b9f7edfb0a5251c5db434cfc'
             'e1a22777c65854041f16fc0a2db3218d17b4d7e7ec7ab7a77cf49c71277c1515'
-            '2af318c52ae0fe5428e8a9245d1b0fc3bc5ce153842d1563329ceb1edfa83ddd')
+            '2af318c52ae0fe5428e8a9245d1b0fc3bc5ce153842d1563329ceb1edfa83ddd'
+            '070d755f80490874986628debd4138416f3f3b8ecfe296727cb0635c45b93fa5')
 
 prepare() {
   cd $pkgbase-$pkgver/
@@ -146,7 +148,7 @@ package_mariadb() {
   # in binaries and support file. But we want our own files...
   # TOOD: Change to upstream file layout with version 10.2.x?
   rm -r etc/
-  install -Dm0644 usr/share/mysql/my-medium.cnf etc/mysql/my.cnf
+  install -Dm0644 "${srcdir}"/my.cnf etc/mysql/my.cnf
   install -Dm0644 usr/share/mysql/wsrep.cnf etc/mysql/wsrep.cnf
 
   install -Dm0644 "${srcdir}"/mariadb-tmpfile.conf usr/lib/tmpfiles.d/mariadb.conf
