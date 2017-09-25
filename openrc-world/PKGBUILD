@@ -12,7 +12,7 @@ pkgname=(
 #         'alsa-utils-openrc'
 #         'avahi-openrc'
 #         'displaymanager-openrc'
-#         'bluez-openrc'
+        'bluez-openrc'
 #         'networkmanager-openrc'
 #         'syslog-ng-openrc'
 #         'cups-openrc'
@@ -63,7 +63,7 @@ source=(
         "xdm-setup.initd::${_url}/x11-base/xorg-server/files/xdm-setup.initd-1"
         "${_url}/x11-apps/xinit/files/startDM.sh"
         "rfcomm.initd::${_url}/net-wireless/bluez/files/rfcomm-init.d-r2"
-        "bluetooth.initd::${_url}/net-wireless/bluez/files/bluetooth-init.d-r3"
+        "bluetooth.initd::${_url}/net-wireless/bluez/files/bluetooth-init.d-r4"
         "NetworkManager.confd::${_url}/net-misc/networkmanager/files/conf.d.NetworkManager"
         "NetworkManager.initd::${_url}/net-misc/networkmanager/files/init.d.NetworkManager-r1"
         "syslog-ng.confd::${_url}/app-admin/syslog-ng/files/3.7/syslog-ng.confd"
@@ -625,7 +625,7 @@ sha256sums=('d1c55400b701a72dcb8bb85e016b5013fa3eb6a2766ffc20dae278d0ee4c1a43'
             'e37a9353ed848f35ac7b07d1398466a18741fd1de075a6cb971e1c28088d791d'
             'f343f87c5c89aa1b7112ec946c4df06b25e541d488405f4d98bedbeddd30bd32'
             '0bd7f4a3e05c781f4cd24ef7d6702fbd7e621100bcd1e281f0ee15bb134f96b5'
-            'e42a9bef5fb34bfcbab223189a416e7be220009aaef36d26b39c664655b2971c'
+            '7fef67f1f0965aa08fd65408d2cd8c3fcefaec0ef627a2a0e1f1372c15e011b2'
             '4594573f01fe5e04b6dde4525796acf909158591bdcefd662ec23fe0d1c3e1bd'
             '861445d46e8863dca26a91018da3dd9fee6a64467a93e7512774dfd88914539d'
             'b29325498ee3b1f3d63672efcd1e93f0745eecdb9f4bb05fed82a2f085399484'
