@@ -1,11 +1,11 @@
 # Maintainer: artoo <artoo@cromnix.org>
 # Contributor: Philip Müller <philm[at]manjaro[dog]org>
 
-_commit=3984ddc62700cd59cf5d393c70048dde5c8c31e1
+_commit=4b176eba0680eb1446e0f04d5013965d0560bfa1
 
 pkgname=calamares
-pkgver=3.1.1
-pkgrel=7
+pkgver=3.1.5
+pkgrel=1
 pkgdesc='Distribution-independent installer framework'
 arch=('i686' 'x86_64')
 license=(GPL)
@@ -20,7 +20,7 @@ backup=('usr/share/calamares/modules/bootloader.conf'
         'usr/share/calamares/modules/unpackfs.conf')
 
 source=("$pkgname-$pkgver.tar.gz::https://github.com/artix-linux/calamares/archive/${_commit}.tar.gz")
-sha256sums=('c6b796f554c5a3bfa33e340a28880ec4716e0cb5c0b4db1a49742fc01361d300')
+sha256sums=('05747999d8dca2ee2a50a09f06c2f2ff880415b38e2a646aafc277370182916b')
 
 # pkgver() {
 #     cd $pkgname
@@ -53,4 +53,11 @@ build() {
 package() {
 	cd ${srcdir}/calamares-${pkgver}/build
 	make DESTDIR="$pkgdir" install
+
+    install -dm644 ${pkgdir}/etc/calamares/modules
+    cd ${srcdir}/calamares-${pkgver}/data/artix/modules
+    for conf in machineid.conf finished.conf displaymanager.conf welcome.conf umount.conf locale.conf;do
+        install -m755 $conf ${pkgdir}/etc/calamares/modules/$conf
+    done
+    install -m755 ${srcdir}/calamares-${pkgver}/data/artix/settings.conf ${pkgdir}/etc/calamares/settings.conf
 }
