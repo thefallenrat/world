@@ -9,14 +9,14 @@ pkgname=(
         'artix-lxqt-presets'
         'artix-cinnamon-presets'
 )
-pkgver=0.5
+pkgver=0.5.1
 pkgrel=1
 arch=('any')
 url="https://github.com/artix-linux/desktop-presets"
 license=('GPL')
 makedepends=('git')
 source=("${pkgbase}-${pkgver}.tar.gz::$url/archive/${pkgver}.tar.gz")
-sha256sums=('363ae27b542ab4a6acc54bc58c154e63f1ccfcf68151d7c011958ebeaa580a0c')
+sha256sums=('7e848dda31293a88a5fa34244a6d0943fc47ff05df571f2b26e7f06fd9c8c5f3')
 
 _inst_dir(){
     cd ${pkgbase}-${pkgver}
