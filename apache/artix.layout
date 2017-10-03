@@ -1,4 +1,4 @@
-<Layout Arch>
+<Layout Artix>
 	prefix:          /etc/httpd
 	exec_prefix:     /usr
 	bindir:          /usr/bin
