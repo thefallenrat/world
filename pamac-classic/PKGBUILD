@@ -1,0 +1,48 @@
+# Maintainer: Chris Cromer <cromer@artixlinux.org>
+
+pkgbase=pamac-classic
+pkgname=('pamac-classic' 'pamac-classic-tray-appindicator')
+pkgver=5.1.2
+pkgrel=1
+pkgdesc="A Gtk3 frontend for libalpm"
+arch=('i686' 'x86_64')
+url="https://github.com/cromnix/pamac-classic"
+license=('GPL3')
+depends=('glib2>=2.42' 'json-glib' 'libsoup' 'dbus-glib' 'polkit' 'vte3>=0.38' 'gtk3>=3.22'
+         'libnotify' 'desktop-file-utils' 'pacman>=5.0' 'pacman<5.1' 'gnutls>=3.4')
+makedepends=('gettext' 'itstool' 'vala>=0.36' 'libappindicator-gtk3')
+options=(!emptydirs)
+
+source=("pamac-$pkgver-$pkgrel.tar.gz::$url/archive/v$pkgver.tar.gz")
+
+sha256sums=('159d92a3862963954783c1686e74b0f70c143353ee953d75609ef964f67a4413')
+
+build() {
+  cd "$srcdir/pamac-classic-$pkgver"
+
+  # build
+  make all
+}
+
+package_pamac-classic() {
+  optdepends=('polkit-gnome: needed for authentification in Cinnamon, Gnome'
+              'mate-polkit: needed for authentification in Mate'
+              'lxsession: needed for authentification in Xfce, LXDE etc.'
+              'pamac-tray-appindicator: tray icon for KDE')
+  backup=('etc/pamac.conf')
+  conflicts=('pamac')
+  install=pamac-classic.install
+  cd "$srcdir/pamac-classic-$pkgver"
+  make prefix="$pkgdir"/usr sysconfdir="$pkgdir"/etc install
+  rm -rf "${pkgdir}/etc/systemd"
+  rm -rf "${pkgdir}/usr/lib/systemd"
+}
+
+package_pamac-classic-tray-appindicator() {
+  pkgdesc="Tray icon using appindicator which feets better in KDE"
+  depends=('pamac-classic' 'libappindicator-gtk3')
+  cd "$srcdir/pamac-classic-$pkgver"
+  make use_appindicator=true
+  make prefix="$pkgdir"/usr sysconfdir="$pkgdir"/etc install_pamac-tray-appindicator
+}
+# vim:set ts=2 sw=2 et:
