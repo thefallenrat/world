@@ -9,15 +9,13 @@ pkgdesc='Development tools for Artix'
 license=('GPL')
 groups=('artools')
 url='https://github.com/artix-linux/artools'
-# makedepends=('git')
 source=("${pkgbase}-${pkgver}.tar.gz::$url/archive/${pkgver}.tar.gz")
 sha256sums=('7f19126538507083da173321bdf3b59e66c79fc618ea1d9e01ad454f9ffd6c1b')
 
-prepare() {
-    cd ${srcdir}/${pkgbase}-${pkgver}
-    sed -e "s/^Version=.*/Version=${pkgver}/" -i Makefile
-    # patches here
-}
+# prepare() {
+#     cd ${srcdir}/${pkgbase}-${pkgver}
+#     sed -e "s/^Version=.*/Version=${pkgver}/" -i Makefile
+# }
 
 build() {
     cd ${srcdir}/${pkgbase}-${pkgver}
