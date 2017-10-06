@@ -2,7 +2,7 @@
 
 pkgbase=pamac-classic
 pkgname=('pamac-classic' 'pamac-classic-tray-appindicator')
-pkgver=5.2.0
+pkgver=5.2.1
 pkgrel=1
 pkgdesc="A Gtk3 frontend for libalpm"
 arch=('i686' 'x86_64')
@@ -15,7 +15,7 @@ options=(!emptydirs)
 
 source=("pamac-classic-$pkgver-$pkgrel.tar.gz::$url/archive/v$pkgver.tar.gz")
 
-sha256sums=('ce291b8fbbfdbd92a52d7ddb4a582e5af149036fd8ad07f9e8000b3e189a5ea8')
+sha256sums=('e3b2c7c72a10b5a806c3b9eab86a2366054550b0f01c2f5b293ae0a1420f98cb')
 
 build() {
   cd "$srcdir/pamac-classic-$pkgver"
