@@ -63,13 +63,16 @@ pipeline {
         }
         stage('BuildInTesting') {
             environment {
-                BUILDPKG = "${CMD}-${BRANCH_NAME}"
-                REPO_DEST = "${REPO}-${BRANCH_NAME}"
+                BUILDPKG = "${CMD}-testing"
+                REPO_DEST = "${REPO}-testing"
                 PACKAGES = readFile('packages.txt')
                 BUILDBOT_GPGP = credentials('BUILDBOT_GPGP')
             }
             when {
-                branch 'testing'
+                anyOf {
+                    branch 'testing'
+                    branch 'PR*'
+                }
                 expression { return readFile('isMove.txt').contains('false') }
             }
             steps {
