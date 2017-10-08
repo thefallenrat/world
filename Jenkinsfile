@@ -1,37 +1,27 @@
 pipeline {
     agent any
+    environment{
+        REPO = 'world'
+        CMD = 'buildpkg'
+    }
+    options {
+        skipDefaultCheckout false
+    }
     stages {
         stage('Prepare') {
+            environment {
+                COMMIT = sh(returnStdout: true, script: 'git rev-parse HEAD').trim()
+                LAST_MERGE = sh(returnStdout: true, script: 'git log --merges --oneline --format=format:%H -n 1').trim()
+            }
             steps {
                 sh '''
-                    gitCommit=$(git rev-parse HEAD)
-                    gitChangeset=$(git show --pretty=format: --name-only ${gitCommit})
-                    gitLastMerge=$(git log --merges --oneline --format=format:%H -n 1)
-                    repo_dest='world'
-                    repo_src='none'
                     isMove=false
-                    case ${BRANCH_NAME} in
-                        'testing')
-                            repo_dest=${repo_dest}-${BRANCH_NAME}
-                            cmd="buildpkg-${BRANCH_NAME}"
-                        ;;
-                        'master')
-                            cmd="buildpkg"
-                            if [[ ${gitCommit} == ${gitLastMerge} ]];then
-                                isMove=true
-                                repo_src=${repo_dest}-testing
-                            fi
-                        ;;
-                        PR-*)
-                            repo_dest=${repo_dest}-testing
-                            cmd="buildpkg-testing"
-                        ;;
-                    esac
+                    if [[ ${BRANCH_NAME} == 'master' ]];then
+                        [[ ${COMMIT} == ${LAST_MERGE} ]] && isMove=true
+                    fi
                     echo ${isMove} > isMove.txt
-                    echo ${cmd} > cmd.txt
-                    echo ${repo_dest} > repo_dest.txt
-                    echo ${repo_src} > repo_src.txt
                     packages=()
+                    gitChangeset=$(git show --pretty=format: --name-only HEAD)
                     for f in ${gitChangeset[@]};do
                         if [[ "$f" == */PKGBUILD ]];then
                             pkg=${f%/PKGBUILD}
@@ -42,14 +32,15 @@ pipeline {
                 '''
             }
         }
-        stage('Build') {
+        stage('BuildInStable') {
             environment {
-                BUILDPKG = readFile('cmd.txt')
-                REPO_DEST = readFile('repo_dest.txt')
+                BUILDPKG = "${CMD}"
+                REPO_DEST = "${REPO}"
                 PACKAGES = readFile('packages.txt')
                 BUILDBOT_GPGP = credentials('BUILDBOT_GPGP')
             }
             when {
+                branch 'master'
                 expression { return readFile('isMove.txt').contains('false') }
             }
             steps {
@@ -66,15 +57,46 @@ pipeline {
                             deploypkg -x -p ${pkg} -r ${REPO_DEST}
                         done
                     '''
+                    archiveArtifacts '**/*.log'
                 }
             }
         }
-        stage('Move') {
+        stage('BuildInTesting') {
             environment {
-                REPO_DEST = readFile('repo_dest.txt')
-                REPO_SRC = readFile('repo_src.txt')
+                BUILDPKG = "${CMD}-${BRANCH_NAME}"
+                REPO_DEST = "${REPO}-${BRANCH_NAME}"
+                PACKAGES = readFile('packages.txt')
+                BUILDBOT_GPGP = credentials('BUILDBOT_GPGP')
             }
             when {
+                branch 'testing'
+                expression { return readFile('isMove.txt').contains('false') }
+            }
+            steps {
+                sh '''
+                    for pkg in ${PACKAGES[@]};do
+                        ${BUILDPKG} -p ${pkg} -z ${REPO_DEST}
+                    done
+                '''
+            }
+            post {
+                success {
+                    sh '''
+                        for pkg in ${PACKAGES[@]};do
+                            deploypkg -x -p ${pkg} -r ${REPO_DEST}
+                        done
+                    '''
+                    archiveArtifacts '**/*.log'
+                }
+            }
+        }
+        stage('MoveInStable') {
+            environment {
+                REPO_DEST = "${REPO}"
+                REPO_SRC = "${REPO}-testing"
+            }
+            when {
+                branch 'master'
                 expression { return readFile('isMove.txt').contains('true') }
             }
             steps {
