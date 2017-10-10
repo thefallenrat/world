@@ -8,16 +8,18 @@ pkgname=('dhcp' 'dhclient')
 # separate patch levels with a period to maintain proper versioning.
 pkgver=4.3.6
 _pkgver=4.3.6
-pkgrel=1
+pkgrel=2
 arch=('i686' 'x86_64')
 license=('custom:isc-dhcp')
 url="https://www.isc.org/software/dhcp"
 makedepends=('bash' 'iproute2')
 validpgpkeys=('BE0E9748B718253A28BB89FFF1B11BF05CF02E57') # Internet Systems Consortium, Inc. (Signing key, 2017-2018) <codesign@isc.org>
 source=(ftp://ftp.isc.org/isc/${pkgbase}/${_pkgver}/${pkgbase}-${_pkgver}.tar.gz{,.asc}
+        dhcp-sysusers.conf
         0001-dhcp-honor-expired.patch)
 sha256sums=('a41eaf6364f1377fe065d35671d9cf82bbbc8f21207819b2b9f33f652aec6f1b'
             'SKIP'
+            'b16083e6bb572ffacaa7cd97e7fde5fcfa1b6dbeb166f162e2ec6e8ec4b928d6'
             '97088096c5d880ecd889f4875ba89cf8eaf564bec772038e8976c22bd4896b18')
 
 prepare() {
@@ -30,7 +32,11 @@ prepare() {
 
 build() {
   cd "${srcdir}/${pkgbase}-${_pkgver}"
-  ./configure --prefix=/usr --sbindir=/usr/bin --sysconfdir=/etc \
+  ./configure \
+      --prefix=/usr \
+      --sbindir=/usr/bin \
+      --sysconfdir=/etc \
+      --enable-paranoia \
       --with-srv-lease-file=/var/lib/dhcp/dhcpd.leases \
       --with-srv6-lease-file=/var/lib/dhcp/dhcpd6.leases \
       --with-cli-lease-file=/var/lib/dhclient/dhclient.leases \
@@ -50,6 +56,8 @@ package_dhcp(){
   make DESTDIR="${pkgdir}" install
 
   install -d "${pkgdir}/var/lib/dhcp"
+
+  install -D -m644 "${srcdir}/dhcp-sysusers.conf" "${pkgdir}/usr/lib/sysusers.d/dhcp.conf"
 
   # move back to config. This file is in backup array, so pacman will not overwrite a changed config.
   mv "${pkgdir}/etc/dhcpd.conf.example" "${pkgdir}/etc/dhcpd.conf"
