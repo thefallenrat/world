@@ -9,14 +9,14 @@ pkgname=(
         'artix-lxqt-presets'
         'artix-cinnamon-presets'
 )
-pkgver=0.4.2
-pkgrel=3
+pkgver=0.5.1
+pkgrel=1
 arch=('any')
 url="https://github.com/artix-linux/desktop-presets"
 license=('GPL')
 makedepends=('git')
 source=("${pkgbase}-${pkgver}.tar.gz::$url/archive/${pkgver}.tar.gz")
-sha256sums=('1ff5e6a7f76a846ad447cc60efc1b10caa6d4cdb122a221747097c10502e54e6')
+sha256sums=('7e848dda31293a88a5fa34244a6d0943fc47ff05df571f2b26e7f06fd9c8c5f3')
 
 _inst_dir(){
     cd ${pkgbase}-${pkgver}
@@ -57,8 +57,6 @@ package_artix-lxqt-presets() {
             'artix-backgrounds'
             'artix-icons')
     provides=('desktop-presets')
-    conflicts=('artix-lxqt-basic-presets')
-    replaces=('artix-lxqt-basic-presets')
 
     _inst_dir 'lxqt'
 }
@@ -68,8 +66,6 @@ package_artix-cinnamon-presets() {
     depends=('artix-backgrounds'
             'artix-icons')
     provides=('desktop-presets')
-    conflicts=('artix-cinnamon-basic-presets')
-    replaces=('artix-cinnamon-basic-presets')
 
     _inst_dir 'cinnamon'
 }

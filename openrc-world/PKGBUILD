@@ -9,44 +9,45 @@ $_prefix && _sed_args+=(-e 's|#!/sbin/openrc-run|#!/usr/bin/openrc-run|g')
 
 pkgbase=openrc-world
 pkgname=(
-        'alsa-utils-openrc'
-        'avahi-openrc'
-        'displaymanager-openrc'
+#         'alsa-utils-openrc'
+#         'avahi-openrc'
+#         'displaymanager-openrc'
         'bluez-openrc'
-        'networkmanager-openrc'
-        'syslog-ng-openrc'
-        'cups-openrc'
-        'ntp-openrc'
-        'fuse-openrc'
-        'metalog-openrc'
-        'sane-openrc'
-        'lirc-openrc'
-        'lm_sensors-openrc'
-        'haveged-openrc'
-        'mpd-openrc'
-        'bitlbee-openrc'
-        'clamav-openrc'
-        'bind-openrc'
-        'cyrus-sasl-openrc'
-        'dhcp-openrc'
-        'lighttpd-openrc'
-        'openslp-openrc'
-        'postfix-openrc'
-        'rsync-openrc'
+#         'networkmanager-openrc'
+#         'syslog-ng-openrc'
+#         'cups-openrc'
+#         'ntp-openrc'
+#         'fuse-openrc'
+#         'metalog-openrc'
+#         'sane-openrc'
+#         'lirc-openrc'
+#         'lm_sensors-openrc'
+#         'haveged-openrc'
+#         'mpd-openrc'
+#         'bitlbee-openrc'
+#         'clamav-openrc'
+#         'bind-openrc'
+#         'cyrus-sasl-openrc'
+#         'dhcp-openrc'
+#         'lighttpd-openrc'
+#         'openslp-openrc'
+#         'postfix-openrc'
+#         'rsync-openrc'
         'samba-openrc'
-        'transmission-openrc'
-        'ypbind-mt-openrc'
-        'ypserv-openrc'
-        'wicd-openrc'
-        'nginx-openrc'
-        'brltty-openrc'
-        'git-openrc'
-        'mysql-openrc'
-        'subversion-openrc'
-        'nvidia-utils-openrc'
-        'freefall-openrc'
+#         'transmission-openrc'
+#         'ypbind-mt-openrc'
+#         'ypserv-openrc'
+#         'wicd-openrc'
+#         'nginx-openrc'
+#         'brltty-openrc'
+#         'git-openrc'
+#         'mysql-openrc'
+#         'subversion-openrc'
+#         'nvidia-utils-openrc'
+#         'freefall-openrc'
+#         'dnsmasq-openrc'
 )
-pkgver=20170805
+pkgver=20170925
 pkgrel=1
 pkgdesc="OpenRC init scripts"
 arch=('any')
@@ -62,7 +63,7 @@ source=(
         "xdm-setup.initd::${_url}/x11-base/xorg-server/files/xdm-setup.initd-1"
         "${_url}/x11-apps/xinit/files/startDM.sh"
         "rfcomm.initd::${_url}/net-wireless/bluez/files/rfcomm-init.d-r2"
-        "bluetooth.initd::${_url}/net-wireless/bluez/files/bluetooth-init.d-r3"
+        "bluetooth.initd::${_url}/net-wireless/bluez/files/bluetooth-init.d-r4"
         "NetworkManager.confd::${_url}/net-misc/networkmanager/files/conf.d.NetworkManager"
         "NetworkManager.initd::${_url}/net-misc/networkmanager/files/init.d.NetworkManager-r1"
         "syslog-ng.confd::${_url}/app-admin/syslog-ng/files/3.7/syslog-ng.confd"
@@ -140,6 +141,8 @@ source=(
         "nvidia-persistenced.initd::${_url}/x11-drivers/nvidia-drivers/files/nvidia-persistenced.init"
         "freefall.confd::${_url}/sys-apps/linux-misc-apps/files/freefall.confd"
         "freefall.initd::${_url}/sys-apps/linux-misc-apps/files/freefall.initd"
+        "dnsmasq.confd::${_url}/net-dns/dnsmasq/files/dnsmasq.confd-r1"
+        "dnsmasq.initd::${_url}/net-dns/dnsmasq/files/dnsmasq-init-r2"
 )
 
 pkgver() {
@@ -599,6 +602,22 @@ package_freefall-openrc() {
     _inst_initd 'freefall'
 }
 
+package_dnsmasq-openrc() {
+    pkgdesc="OpenRC dnsmasq init script"
+    depends=('openrc' 'dnsmasq')
+    backup=('etc/conf.d/dnsmasq')
+
+    _inst_confd 'dnsmasq'
+    _inst_initd 'dnsmasq'
+
+    sed -e 's|/usr/sbin|/usr/bin|g' \
+        -e 's|/var/run|/run|g' \
+        -i "${pkgdir}/etc/init.d/dnsmasq"
+
+    sed -e 's/--user/--enable-dbus --user/' \
+        -i "${pkgdir}/etc/conf.d/dnsmasq"
+}
+
 sha256sums=('d1c55400b701a72dcb8bb85e016b5013fa3eb6a2766ffc20dae278d0ee4c1a43'
             'cf67ba1c4bd13cc6fafdebab40b3e84d09f5b6ec768ed2dcf0ec53d9be296ba4'
             '9d26b72bb28611a60a6b9f942b8d8cfe47b59f926be89af9709b5912668344d8'
@@ -606,7 +625,7 @@ sha256sums=('d1c55400b701a72dcb8bb85e016b5013fa3eb6a2766ffc20dae278d0ee4c1a43'
             'e37a9353ed848f35ac7b07d1398466a18741fd1de075a6cb971e1c28088d791d'
             'f343f87c5c89aa1b7112ec946c4df06b25e541d488405f4d98bedbeddd30bd32'
             '0bd7f4a3e05c781f4cd24ef7d6702fbd7e621100bcd1e281f0ee15bb134f96b5'
-            'e42a9bef5fb34bfcbab223189a416e7be220009aaef36d26b39c664655b2971c'
+            '7fef67f1f0965aa08fd65408d2cd8c3fcefaec0ef627a2a0e1f1372c15e011b2'
             '4594573f01fe5e04b6dde4525796acf909158591bdcefd662ec23fe0d1c3e1bd'
             '861445d46e8863dca26a91018da3dd9fee6a64467a93e7512774dfd88914539d'
             'b29325498ee3b1f3d63672efcd1e93f0745eecdb9f4bb05fed82a2f085399484'
@@ -683,4 +702,6 @@ sha256sums=('d1c55400b701a72dcb8bb85e016b5013fa3eb6a2766ffc20dae278d0ee4c1a43'
             '347437868119e8ae12852a574597936e855f534a9ad290fef3f62b4083a38516'
             '17664ed958b1d7706e5151201f784d755c60e66239229d2988e186b649756465'
             '3ed6f497dbb8f6b8a65f369b74d04a826a1b0463b344ce5d1b2000d97f4d5471'
-            '9959046202c21ca157aa542071925683d4b0836e9c5b29b92416eb513b1c44d2')
+            '9959046202c21ca157aa542071925683d4b0836e9c5b29b92416eb513b1c44d2'
+            '51c0672a70d5d6793d295d82db666d372fb081e8627318f67c88e48d08d254b5'
+            '8b184410ebc510841f6a4f6f2b622e97cb7d5d697ece8e1f30e34dbcafad21fe')

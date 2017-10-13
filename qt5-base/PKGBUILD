@@ -4,7 +4,7 @@
 
 pkgbase=qt5-base
 pkgname=(qt5-base qt5-xcb-private-headers)
-_qtver=5.9.1
+_qtver=5.9.2
 pkgver=${_qtver/-/}
 pkgrel=1
 arch=('i686' 'x86_64')
@@ -26,8 +26,10 @@ optdepends=('qt5-svg: to use SVG icon themes'
 conflicts=('qtchooser')
 groups=('qt' 'qt5')
 _pkgfqn="${pkgbase/5-/}-opensource-src-${_qtver}"
-source=("http://download.qt.io/official_releases/qt/${pkgver%.*}/${_qtver}/submodules/${_pkgfqn}.tar.xz")
-sha256sums=('bc9a21e9f6fff9629019fdf9f989f064751d5073c3a28dc596def92f4d4275c6')
+source=("http://download.qt.io/official_releases/qt/${pkgver%.*}/${_qtver}/submodules/${_pkgfqn}.tar.xz"
+        harmony-fix.diff)
+sha256sums=('7fe2bb468955f633c71b3ddd3c269e68a2c4137a4e5b8dd12dcdb34cbc6d609b'
+            '8451c0a86e887492b706950ce533c616e687b790c54e86fb1f405dc2074737a3')
 
 prepare() {
   cd ${_pkgfqn}
@@ -45,6 +47,9 @@ prepare() {
 
   # Fix missing private includes https://bugreports.qt.io/browse/QTBUG-37417
   sed -e '/CMAKE_NO_PRIVATE_INCLUDES\ \=\ true/d' -i mkspecs/features/create_cmake.prf
+
+  # Freetype 2.8.1
+  patch -p1 -i ../harmony-fix.diff
 }
 
 build() {

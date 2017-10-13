@@ -3,20 +3,20 @@
 # Contributor: Ionut Biru <ibiru@archlinux.org>
 
 pkgname=udisks2
-pkgver=2.7.2
-pkgrel=2
+pkgver=2.7.3
+pkgrel=1
 pkgdesc="Disk Management Service, version 2"
 arch=('i686' 'x86_64')
 url="http://www.freedesktop.org/wiki/Software/udisks"
 license=('GPL2')
-depends=('glib2' 'polkit' 'libatasmart' 'libgudev' 'eudev' 'libblockdev')
+depends=('polkit' 'libatasmart' 'libgudev' 'eudev' 'libblockdev')
 makedepends=('docbook-xsl' 'gobject-introspection' 'gnome-common' 'intltool' 'parted' 'libiscsi')
-optdepends=('parted: partition management'
-            'gptfdisk: GUID partition table support'
+optdepends=('gptfdisk: GUID partition table support'
             'ntfs-3g: NTFS filesystem management support'
-            'dosfstools: VFAT filesystem management support')
+            'dosfstools: VFAT filesystem management support'
+            'libiscsi: iSCSI support')
 source=("udisks2-${pkgver}::https://github.com/storaged-project/udisks/archive/udisks-${pkgver}.tar.gz")
-sha256sums=('34d834520efcfbb8cca33ccf703e45752b32772ae766673dab6360202c7838aa')
+sha256sums=('96e09e94083228a7af1025c4040b56c7eeca9687e60fecf7f88be88291dcb1f1')
 
 prepare(){
 #     cd "udisks-udisks-$pkgver"
@@ -35,7 +35,8 @@ build() {
         --disable-static \
         --sbindir=/usr/bin \
         --libexecdir=/usr/lib \
-        --with-systemdsystemunitdir=no #--enable-available-modules
+        --with-systemdsystemunitdir=no \
+        --enable-available-modules
     make
 }
 

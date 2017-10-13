@@ -3,8 +3,8 @@
 # Maintainer: Jan de Groot
 
 pkgname=libinput
-pkgver=1.8.1
-pkgrel=2
+pkgver=1.8.3
+pkgrel=1
 pkgdesc="Input device management and event handling library"
 arch=(i686 x86_64)
 url="https://www.freedesktop.org/wiki/Software/libinput/"
@@ -17,7 +17,7 @@ optdepends=('gtk3: libinput debug-gui')
 # conflicts=("$pkgname")
 #checkdepends=('check' 'libunwind')
 source=(https://freedesktop.org/software/$pkgname/$pkgname-$pkgver.tar.xz) #{,.sig})
-sha256sums=('e3590a9037e561a5791c8bd3b34bfd30fad5cacd8cbefc0d75fafe3a41d07147')
+sha256sums=('2fe2e2f52f0971a9c43541b8f26582ca8df6ed4bb9050e85eb40d4ff6b13142d')
 validpgpkeys=('3C2C43D9447D5938EF4551EBE23B7E70B467F0BF') # Peter Hutterer (Who-T) <office@who-t.net>
 
 prepare() {

@@ -2,7 +2,7 @@
 # Maintainer: Felix Yan <felixonmars@archlinux.org>
 
 pkgname=libblockdev
-pkgver=2.10
+pkgver=2.12
 pkgrel=1
 pkgdesc="A library for manipulating block devices"
 arch=('i686' 'x86_64')
@@ -12,7 +12,7 @@ depends=('btrfs-progs' 'dosfstools' 'dmraid' 'gptfdisk' 'libbytesize' 'lvm2' 'md
          'volume_key' 'xfsprogs' 'kmod')
 makedepends=('gobject-introspection' 'systemd' 'python')
 source=("$pkgname-$pkgver.tar.gz::https://github.com/rhinstaller/libblockdev/archive/$pkgver-1.tar.gz")
-sha512sums=('f808fd327b0e250cfb97a06ea716b5eb5c6812301b7da1cd6b757b3af44ceca038fe549f607b71fa395cfb1da6c70c20c8a224953fbc30ebe36c3d0e897eb15b')
+sha512sums=('d40ce3ae45edbe2c79fe0c86df8a22982bd94718cf82161ccd5d7759272eba9948d29e6ab26490f7ba8cb3630b0350ee3a659fba7da73056dc123db9c2535b2e')
 
 prepare() {
   sed -i 's/-ldmraid //' $pkgname-$pkgver-1/src/lib/Makefile.am

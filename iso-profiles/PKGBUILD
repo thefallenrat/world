@@ -3,17 +3,17 @@
 _pkgname=iso-profiles
 
 pkgname=artix-iso-profiles
-pkgver=0.5.1
+pkgver=0.6
 pkgrel=1
 arch=('any')
 pkgdesc='Artix desktop iso profiles'
 license=('GPL')
 url='https://github.com/artix-linux/iso-profiles'
 groups=('artools')
-depends=("artools-yaml>=0.5")
+depends=("artools-iso")
 makedepends=('git')
 source=("${_pkgname}-${pkgver}.tar.gz::$url/archive/${pkgver}.tar.gz")
-sha256sums=('257c790f899a326685b47d7a6b4a9e6186fc7f5064113f530b1d6e47bfe2aa37')
+sha256sums=('465b1c263fd3c7e137a9f60f6becc1bf256a2dde6661a32a81207733361ed39b')
 
 package() {
     cd ${_pkgname}-${pkgver}

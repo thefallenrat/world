@@ -3,14 +3,14 @@
 
 pkgbase=grub-theme
 pkgname=('artix-grub-theme-common' 'artix-grub-theme')
-pkgver=0.2.2
+pkgver=0.3.3
 pkgrel=1
 pkgdesc='Artix grub theme'
 arch=('any')
 url="https://github.com/artix-linux/grub-theme"
 license=('GPL')
 source=("${pkgbase}-${pkgver}.tar.gz::${url}/archive/${pkgver}.tar.gz")
-sha256sums=('d9c6355732676ca32322a5effbcb79577cdef60b2cb18ea1906086ce351fb7b2')
+sha256sums=('54cc4e9c7715ae18ded0a9e997c20b16bf2901578ace0fcb9405c13bdb864bc4')
 
 
 package_artix-grub-theme-common() {
