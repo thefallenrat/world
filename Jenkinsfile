@@ -4,7 +4,8 @@ def PACKAGES = []
 pipeline {
     agent any
     options {
-        skipDefaultCheckout true
+        skipDefaultCheckout()
+        timestamps()
     }
     stages {
         stage('Checkout') {
@@ -35,27 +36,51 @@ pipeline {
             }
         }
         stage('Prepare') {
+            when {
+                expression { return readFile('isMove.txt').contains('false') }
+            }
             steps {
                 script {
                     def changeLogSets = currentBuild.changeSets
-                    for (int i = 0; i < changeLogSets.size(); i++) {
-                        def entries = changeLogSets[i].items
-                        for (int j = 0; j < entries.length; j++) {
-                            def entry = entries[j]
-                            echo "${entry.commitId} by ${entry.author} on ${new Date(entry.timestamp)}: ${entry.msg}"
-                            def files = new ArrayList(entry.affectedFiles)
-                            for (int k = 0; k < files.size(); k++) {
-                                def file = files[k]
-                                echo "${file.path}"
-                                if ( file.path.contains('PKGBUILD') ){
-                                    def pkg = file.path.minus('/PKGBUILD')
-                                    PACKAGES << pkg
+                    if ( changeLogSets.size() > 0 ) {
+                        for (int i = 0; i < changeLogSets.size(); i++) {
+                            def entries = changeLogSets[i].items
+                            for (int j = 0; j < entries.length; j++) {
+                                def entry = entries[j]
+                                echo "${entry.commitId} by ${entry.author} on ${new Date(entry.timestamp)}: ${entry.msg}"
+                                def files = new ArrayList(entry.affectedFiles)
+                                for (int k = 0; k < files.size(); k++) {
+                                    def file = files[k]
+                                    echo "${file.editType.name} ${file.path}"
+                                    if ( file.path.contains('PKGBUILD') ){
+                                        def pkg = file.path.minus('/PKGBUILD')
+                                        PACKAGES << pkg
+                                    }
                                 }
+                            }
+                        }
+                    } else {
+                        def changed_files = sh(returnStdout: true, script: 'git show --pretty=format: --name-only HEAD').tokenize()
+                        for (int i = 0; i < changed_files.size(); i++) {
+                            def cfile = changed_files[i]
+                            echo "cfile: " + cfile
+                            if ( cfile.contains('PKGBUILD') ){
+                                def pkg = cfile.minus('/PKGBUILD')
+                                PACKAGES << pkg
                             }
                         }
                     }
                     echo "PACKAGES: ${PACKAGES}"
                 }
+            }
+        }
+        stage('Move') {
+            when {
+                branch 'master'
+                expression { return readFile('isMove.txt').contains('true') }
+            }
+            steps {
+                sh "deploypkg -m -r ${REPO}-testing -t ${REPO}"
             }
         }
         stage('Stable') {
@@ -111,15 +136,6 @@ pipeline {
                         }
                     }
                 }
-            }
-        }
-        stage('Move') {
-            when {
-                branch 'master'
-                expression { return readFile('isMove.txt').contains('true') }
-            }
-            steps {
-                sh "deploypkg -m -r ${REPO}-testing -t ${REPO}"
             }
         }
     }
