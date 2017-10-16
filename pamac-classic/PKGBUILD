@@ -2,7 +2,7 @@
 
 pkgname=pamac-classic
 pkgver=6.0.1
-pkgrel=1
+pkgrel=2
 pkgdesc="A Gtk3 frontend for libalpm"
 arch=('i686' 'x86_64')
 url="https://github.com/cromnix/pamac-classic"
