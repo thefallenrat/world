@@ -21,7 +21,6 @@ sha256sums=('ecfa62a7fa3c4c18b9eccd8c16eaddee4bd308a76ea50b5c02a5840f09c0a1c2'
 build() {
 	cd "$srcdir/$pkgname-$pkgver"
 	./configure --prefix=/usr \
-		# rsync requires the bundled zlib to support old-style --compress
 		--with-included-popt=no \
 		--with-included-zlib=yes \
 		--disable-debug
