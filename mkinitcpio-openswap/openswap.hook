@@ -1,8 +1,8 @@
 run_hook ()
 {
     ## read openswap configurations
-    source openswap.conf
-    
+    source /openswap.conf
+
     if [ -z "$keyfile_device" ] || [ -z "$keyfile_filename" ]
     then
       ## case when no keyfile provided in configurations
