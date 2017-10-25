@@ -1,8 +1,8 @@
 # Maintainer: Chris Cromer <cromer@artixlinux.org>
 
 pkgname=pamac-classic
-pkgver=6.0.1
-pkgrel=2
+pkgver=6.3.2
+pkgrel=1
 pkgdesc="A Gtk3 frontend for libalpm"
 arch=('i686' 'x86_64')
 url="https://github.com/cromnix/pamac-classic"
@@ -19,7 +19,7 @@ source=("pamac-classic-$pkgver.tar.gz::$url/archive/v$pkgver.tar.gz")
 backup=('etc/pamac.conf')
 install=pamac-classic.install
 
-sha256sums=('820bc2617eedf44cdefb1f3d6d26e1d1b78c3437849d5f726f60025eaf53518f')
+sha256sums=('b93c8f03009154c4c569335aafa13dd0acc4b64a26a4d7b1445bb62cd08f0e9e')
 
 prepare() {
 	[ -d "${srcdir}"/build ] && rm -rf build
