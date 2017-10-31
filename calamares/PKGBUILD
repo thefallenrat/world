@@ -1,11 +1,11 @@
 # Maintainer: artoo <artoo@cromnix.org>
 # Contributor: Philip Müller <philm[at]manjaro[dog]org>
 
-_commit=83d7205b325efcfcb593604eb0801b50941c575e
+_commit=783b0dc6b55f3a866e1c9e36b77f2a115b6ee1e3
 
 pkgname=calamares
 pkgver=3.1.7
-pkgrel=1
+pkgrel=2
 pkgdesc='Distribution-independent installer framework'
 arch=('i686' 'x86_64')
 license=(GPL)
