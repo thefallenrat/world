@@ -1,11 +1,10 @@
 # Maintainer: artoo <artoo@cromnix.org>
-# Contributor: Philip Müller <philm[at]manjaro[dog]org>
 
-_commit=6660fc88f6e73eb155105141b37a35c8d5f2e48d
+_commit=783b0dc6b55f3a866e1c9e36b77f2a115b6ee1e3
 
 pkgname=calamares
-pkgver=3.1.5
-pkgrel=4
+pkgver=3.1.7
+pkgrel=2
 pkgdesc='Distribution-independent installer framework'
 arch=('i686' 'x86_64')
 license=(GPL)
@@ -14,14 +13,9 @@ license=('LGPL')
 depends=('kconfig' 'kcoreaddons' 'ki18n' 'solid' 'yaml-cpp' 'kpmcore>=3.1.0'
          'boost-libs' 'hwinfo' 'qt5-svg' 'polkit-qt5' 'gtk-update-icon-cache'
          'pythonqt' 'kiconthemes' 'kio')
-makedepends=('extra-cmake-modules' 'qt5-tools' 'qt5-translations' 'boost')
-backup=('usr/share/calamares/modules/bootloader.conf'
-        'usr/share/calamares/modules/displaymanager.conf'
-        'usr/share/calamares/modules/initcpio.conf'
-        'usr/share/calamares/modules/unpackfs.conf')
-
-source=("$pkgname-$pkgver.tar.gz::https://github.com/artix-linux/calamares/archive/${_commit}.tar.gz")
-sha256sums=('36b1fcd51555ff19bfdf0b211bce2d15546c15ff4db2958028c956b2b7ddecda')
+makedepends=('extra-cmake-modules' 'qt5-tools' 'qt5-translations' 'boost' 'git')
+source=("git+https://github.com/artix-linux/calamares#commit=$_commit")
+sha256sums=('SKIP')
 
 # pkgver() {
 #     cd $pkgname
@@ -29,13 +23,12 @@ sha256sums=('36b1fcd51555ff19bfdf0b211bce2d15546c15ff4db2958028c956b2b7ddecda')
 # }
 
 prepare() {
-	mv ${srcdir}/calamares-${_commit} ${srcdir}/calamares-${pkgver}
-	cd ${srcdir}/calamares-${pkgver}
+	cd $pkgname
 	# patches here
 }
 
 build() {
-	cd ${srcdir}/calamares-${pkgver}
+	cd $pkgname
 
 	mkdir -p build
 	cd build
@@ -52,13 +45,11 @@ build() {
 }
 
 package() {
-	cd ${srcdir}/calamares-${pkgver}/build
+	cd $pkgname/build
 	make DESTDIR="$pkgdir" install
 
     install -dm755 ${pkgdir}/etc/calamares/modules
-    cd ${srcdir}/calamares-${pkgver}/data/artix/modules
-    for conf in machineid.conf finished.conf displaymanager.conf welcome.conf umount.conf locale.conf;do
-        install -m755 $conf ${pkgdir}/etc/calamares/modules/$conf
-    done
-    install -m755 ${srcdir}/calamares-${pkgver}/data/artix/settings.conf ${pkgdir}/etc/calamares/settings.conf
+    cd ${srcdir}/$pkgname
+    install -m755 data/artix/settings.conf ${pkgdir}/etc/calamares/settings.conf
+    install -m755 data/artix/modules/{machineid,finished,displaymanager,welcome,umount,locale}.conf ${pkgdir}/etc/calamares/modules/
 }
