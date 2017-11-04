@@ -1,0 +1,36 @@
+# $Id$
+# Maintainer: Jan de Groot <jgc@archlinux.org>
+
+pkgname=iso-codes
+pkgver=3.75
+pkgrel=1
+pkgdesc="Lists of the country, language, and currency names"
+arch=('any')
+url="https://pkg-isocodes.alioth.debian.org/"
+license=('LGPL')
+makedepends=('python' git)
+_commit=a37f8c303d96cefcda4cac6f1e7311be8eaa64a3  # tags/iso-codes-3.75
+source=("git+https://anonscm.debian.org/git/pkg-isocodes/iso-codes.git#commit=$_commit")
+sha256sums=('SKIP')
+
+pkgver() {
+  cd $pkgname
+  git describe --tags | sed 's/^iso-codes-//;s/-/+/g'
+}
+
+prepare() {
+  cd $pkgname
+  autoreconf -fi
+}
+
+build() {
+  cd "$srcdir/$pkgname"
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd "$srcdir/$pkgname"
+  make DESTDIR="$pkgdir" pkgconfigdir=/usr/lib/pkgconfig install
+}
+
