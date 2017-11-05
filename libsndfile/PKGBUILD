@@ -23,6 +23,7 @@ prepare() {
 
 build() {
   cd ${pkgname}-${pkgver}
+  aclocal
   ./configure --prefix=/usr --disable-sqlite
   make
 }
