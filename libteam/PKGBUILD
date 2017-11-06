@@ -3,7 +3,7 @@
 
 pkgname=libteam
 pkgver=1.26
-pkgrel=1
+pkgrel=1.1
 pkgdesc="Library for controlling team network device"
 arch=(i686 x86_64)
 url="http://libteam.org/"
@@ -46,11 +46,6 @@ check() {
 package() {
   cd $pkgname
   make DESTDIR="$pkgdir" install
-
-  install -Dm644 teamd/redhat/systemd/teamd@.service \
-    "$pkgdir/usr/lib/systemd/system/teamd@.service"
-  install -Dm644 teamd/dbus/teamd.conf \
-    "$pkgdir/etc/dbus-1/system.d/teamd.conf"
 
   cd binding/python
   python  ./setup.py install --root "$pkgdir" -O1
