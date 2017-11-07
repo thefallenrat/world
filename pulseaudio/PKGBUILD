@@ -8,7 +8,7 @@ pkgbase=pulseaudio
 pkgname=(pulseaudio libpulse pulseaudio-{gconf,zeroconf,lirc,jack,bluetooth,equalizer})
 pkgdesc="A featureful, general-purpose sound server"
 pkgver=11.1
-pkgrel=1
+pkgrel=1.1
 arch=(i686 x86_64)
 url="https://www.freedesktop.org/wiki/Software/PulseAudio/"
 license=(GPL)
@@ -61,7 +61,7 @@ package_pulseaudio() {
            webrtc-audio-processing)
   optdepends=('pulseaudio-alsa: ALSA configuration (recommended)')
   backup=(etc/pulse/{daemon.conf,default.pa,system.pa})
-  install=pulseaudio.install
+ # install=pulseaudio.install
   replaces=('pulseaudio-xen<=9.0')
 
   cd pulseaudio
