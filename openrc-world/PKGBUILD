@@ -12,7 +12,7 @@ pkgname=(
 #         'alsa-utils-openrc'
 #         'avahi-openrc'
 #         'displaymanager-openrc'
-        'bluez-openrc'
+#         'bluez-openrc'
 #         'networkmanager-openrc'
 #         'syslog-ng-openrc'
 #         'cups-openrc'
@@ -33,7 +33,7 @@ pkgname=(
 #         'openslp-openrc'
 #         'postfix-openrc'
 #         'rsync-openrc'
-        'samba-openrc'
+#         'samba-openrc'
 #         'transmission-openrc'
 #         'ypbind-mt-openrc'
 #         'ypserv-openrc'
@@ -46,8 +46,9 @@ pkgname=(
 #         'nvidia-utils-openrc'
 #         'freefall-openrc'
 #         'dnsmasq-openrc'
+          'fuse-openrc'
 )
-pkgver=20170925
+pkgver=20171111
 pkgrel=1
 pkgdesc="OpenRC init scripts"
 arch=('any')
@@ -143,6 +144,7 @@ source=(
         "freefall.initd::${_url}/sys-apps/linux-misc-apps/files/freefall.initd"
         "dnsmasq.confd::${_url}/net-dns/dnsmasq/files/dnsmasq.confd-r1"
         "dnsmasq.initd::${_url}/net-dns/dnsmasq/files/dnsmasq-init-r2"
+        "fuse.initd::${_url}/sys-fs/fuse/files/fuse.init"
 )
 
 pkgver() {
@@ -618,6 +620,13 @@ package_dnsmasq-openrc() {
         -i "${pkgdir}/etc/conf.d/dnsmasq"
 }
 
+package_fuse-openrc() {
+    pkgdesc="OpenRC fuse init script"
+    depends=('openrc' 'fuse')
+
+    _inst_initd 'fuse'
+}
+
 sha256sums=('d1c55400b701a72dcb8bb85e016b5013fa3eb6a2766ffc20dae278d0ee4c1a43'
             'cf67ba1c4bd13cc6fafdebab40b3e84d09f5b6ec768ed2dcf0ec53d9be296ba4'
             '9d26b72bb28611a60a6b9f942b8d8cfe47b59f926be89af9709b5912668344d8'
@@ -631,10 +640,10 @@ sha256sums=('d1c55400b701a72dcb8bb85e016b5013fa3eb6a2766ffc20dae278d0ee4c1a43'
             'b29325498ee3b1f3d63672efcd1e93f0745eecdb9f4bb05fed82a2f085399484'
             '5c4ad3406fc885555883de0537614034de181d783bcb1e864bff6299ac6c1356'
             '54b86ec2d7086004cde4e8b69aa49b7334718cad42a4426382f56269bb0f5a78'
-            '40803821f498267f6567436eedc18201b5ae4b5390d6872fb15a94200c2ac06f'
+            '91fb1497b3a6ef0bb3a3d5baefdff801d8ff1cba27aaf742303415550814a09b'
             'c7dc517cdb5ee10e2a07ccea15ec47ba0b7aff8ac1469204c8d7faf71bcae2c5'
             '97282007801cb9c0e3b431e2930dec3bb8ce8869f63f7e02d903846e96734684'
-            'cdccb5f0009d1498be90a3f423158d7a3c603a1398f8993ae6fb828224a7cdaa'
+            'e3ddd2620be927f66e9fb325ad3dbe89e7845b5a30de09fbe25fad2d13df641b'
             '49f6634a258d4a91dc12c3b6bf9014b05a39cfe121ad52f826721ab791a28aa3'
             'd1ba585272e6158a942d536d508a2979a1ca17316d4b97766d78bad4e9a6a7b8'
             '1535237db113a76261d6f1ce0b24a55e956934b0c1c59e9fd624f621961327b6'
@@ -704,4 +713,5 @@ sha256sums=('d1c55400b701a72dcb8bb85e016b5013fa3eb6a2766ffc20dae278d0ee4c1a43'
             '3ed6f497dbb8f6b8a65f369b74d04a826a1b0463b344ce5d1b2000d97f4d5471'
             '9959046202c21ca157aa542071925683d4b0836e9c5b29b92416eb513b1c44d2'
             '51c0672a70d5d6793d295d82db666d372fb081e8627318f67c88e48d08d254b5'
-            '8b184410ebc510841f6a4f6f2b622e97cb7d5d697ece8e1f30e34dbcafad21fe')
+            '8b184410ebc510841f6a4f6f2b622e97cb7d5d697ece8e1f30e34dbcafad21fe'
+            '66ce65e2459fef26bb1711d706a23643a9af7a80e03ee6be836a377310b00682')
