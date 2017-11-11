@@ -3,19 +3,21 @@
 
 pkgname=syslog-ng
 pkgver=3.12.1
-pkgrel=1
+pkgrel=3
 pkgdesc="Next-generation syslogd with advanced networking and filtering capabilities"
 arch=('i686' 'x86_64')
 url="http://www.balabit.com/network-security/syslog-ng/"
 license=('GPL2' 'LGPL2.1')
-depends=('awk' 'eventlog' 'eudev' 'glib2' 'libdbi')
+depends=('awk' 'eudev' 'glib2' 'libdbi')
 makedepends=('python2' 'libxslt' 'json-c' 'libmongoc' 'librabbitmq-c')
 checkdepends=('python-nose' 'python-ply')
 optdepends=('logrotate: for rotating log files'
             'json-c: for json-plugin'
             'curl: for the HTTP module'
-            'librabbitmq-c: for the AMQP plugin'            
+            'librabbitmq-c: for the AMQP plugin'
             'libmongoc: for the MongoDB plugin')
+conflicts=('eventlog')
+replaces=('eventlog')
 backup=('etc/syslog-ng/scl.conf'
         'etc/syslog-ng/syslog-ng.conf'
         'etc/logrotate.d/syslog-ng')
