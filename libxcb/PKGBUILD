@@ -5,7 +5,7 @@
 
 pkgname=libxcb
 pkgver=1.12
-pkgrel=1
+pkgrel=1.1
 pkgdesc="X11 client-side library"
 arch=('i686' 'x86_64')
 url="https://xcb.freedesktop.org/"
