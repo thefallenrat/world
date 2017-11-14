@@ -2,7 +2,7 @@
 
 pkgname=pamac-classic
 pkgver=6.6.2
-pkgrel=1
+pkgrel=2
 pkgdesc="A Gtk3 frontend for libalpm"
 arch=('i686' 'x86_64')
 url="https://github.com/cromnix/pamac-classic"
@@ -16,7 +16,6 @@ optdepends=('polkit-gnome: needed for authentification in Cinnamon, Gnome'
 			'lxsession: needed for authentification in Xfce, LXDE etc.'
 			'pamac-tray-appindicator: tray icon for KDE')
 source=("pamac-classic-$pkgver.tar.gz::$url/archive/v$pkgver.tar.gz")
-backup=('etc/pamac.conf')
 install=pamac-classic.install
 
 sha256sums=('d2dc59fda6e09ca1fcead6727f083bd598067744d6e252ba1f7078a26f16cac0')
