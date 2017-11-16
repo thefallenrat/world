@@ -9,7 +9,7 @@ arch=('i686' 'x86_64')
 license=('GPL')
 url='http://mariadb.org/'
 makedepends=('cmake' 'zlib' 'libaio' 'libxml2' 'openssl' 'jemalloc'
-             'lz4' 'boost' 'libevent' 'eudev')
+             'lz4' 'boost' 'libevent' 'eudev' 'pcre')
 validpgpkeys=('199369E5404BD5FC7D2FE43BCBCB082A1BB943DB') # MariaDB Package Signing Key <package-signing-key@mariadb.org>
 source=("https://ftp.heanet.ie/mirrors/mariadb/mariadb-$pkgver/source/mariadb-$pkgver.tar.gz"{,.asc}
         '0001-openssl-1-1-0.patch'
@@ -86,7 +86,7 @@ build() {
 
 package_libmariadbclient() {
   pkgdesc='MariaDB client libraries'
-  depends=('openssl' 'libaio' 'zlib' 'lz4' 'lzo' 'xz')
+  depends=('openssl' 'libaio' 'zlib' 'lz4' 'lzo' 'xz' 'pcre')
   conflicts=('libmysqlclient')
 
   cd build
@@ -135,7 +135,7 @@ package_mariadb() {
   backup=('etc/mysql/my.cnf'
           'etc/mysql/wsrep.cnf')
   install=mariadb.install
-  depends=("mariadb-clients=${pkgver}" 'inetutils' 'libaio' 'libxml2' 'jemalloc'
+  depends=("mariadb-clients=${pkgver}" 'inetutils' 'libaio' 'libxml2' 'jemalloc' 'pcre'
            'lz4' 'boost-libs' 'lzo' 'libevent' 'libeudev')
   optdepends=('galera: for MariaDB cluster with Galera WSREP'
               'perl-dbd-mysql: for mysqlhotcopy, mysql_convert_table_format and mysql_setpermission')
