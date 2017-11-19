@@ -44,10 +44,10 @@ build() {
   ninja
 }
 
-check() {
-  cd build
-  meson test
-}
+#check() {
+#  cd build
+#  meson test
+#}
 
 package() {
   cd build
