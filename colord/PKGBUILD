@@ -6,7 +6,7 @@ pkgname=colord
 pkgver=1.4.1
 pkgrel=1
 pkgdesc="System daemon for managing color devices"
-arch=(i686 x86_64)
+arch=(x86_64)
 url="https://www.freedesktop.org/software/colord"
 license=(GPL2)
 depends=(lcms2 libgusb polkit sqlite eudev dconf dbus libgudev shared-mime-info)
@@ -39,16 +39,15 @@ build() {
     -Denable-sane=true \
     -Denable-vala=true \
     -Denable-print-profiles=true \
-    -Denable-systemdsystemunitdir=no \
-    -Denable-systemd-login=no \
-    -Dwith-daemon-user=colord
+    -Dwith-daemon-user=colord \
+    -Denable-systemd=false
   ninja
 }
 
-check() {
-  cd build
-  meson test
-}
+#check() {
+#  cd build
+#  meson test
+#}
 
 package() {
   cd build

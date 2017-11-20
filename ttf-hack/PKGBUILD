@@ -1,0 +1,18 @@
+# Maintainer: Lukas Fleischer <lfleischer@archlinux.org>
+# Contributor: Markus Tacker <m@cto.hiv>
+# Contributor: Peter Hoeg <peter@hoeg.com>
+
+pkgname=ttf-hack
+pkgver=3.000
+pkgrel=1
+pkgdesc='A hand groomed and optically balanced typeface based on Bitstream Vera Mono.'
+arch=('any')
+license=('SIL Open Font License 1.1 and Bitstream Vera License')
+url="http://sourcefoundry.org/hack/"
+depends=('fontconfig' 'xorg-fonts-encodings' 'xorg-font-utils')
+source=("https://github.com/source-foundry/Hack/releases/download/v${pkgver}/Hack-v${pkgver}-ttf.tar.xz")
+sha256sums=('2237f89b9e0b884f1f72e4804d8cd689f00d521078882df4759cfe354808ba29')
+
+package() {
+  install -Dm644 -t "$pkgdir/usr/share/fonts/TTF" "$srcdir"/Hack-*.ttf
+}
