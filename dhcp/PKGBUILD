@@ -7,7 +7,7 @@ pkgname=('dhcp' 'dhclient')
 
 # separate patch levels with a period to maintain proper versioning.
 pkgver=4.3.6
-pkgrel=3
+pkgrel=4
 arch=('x86_64')
 license=('custom:isc-dhcp')
 url="https://www.isc.org/software/dhcp"
