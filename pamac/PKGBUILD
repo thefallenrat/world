@@ -1,7 +1,7 @@
 # Maintainer: Chris Cromer <cromer@artixlinux.org>
 
 pkgname=pamac
-_pkgver=6.2.1
+_pkgver=6.2.2
 pkgver=$_pkgver
 pkgrel=1
 pkgdesc="A Gtk3 frontend for libalpm"
@@ -15,7 +15,7 @@ makedepends=('gettext' 'itstool' 'vala>=0.36' 'meson' 'ninja')
 conflicts=('pamac-tray-appindicator')
 
 source=("pamac-$pkgver.tar.gz::$url/archive/v$_pkgver.tar.gz")
-sha256sums=('df30b4b9fe30256910f552cd9158e739dc8ca764c46cb32112e6a549bd418419')
+sha256sums=('24637013909663fe1e2d51944341822ac97ed01f45e2acf092191e0fb8631fac')
 
 prepare() {
   cd "$srcdir/pamac-$_pkgver"
