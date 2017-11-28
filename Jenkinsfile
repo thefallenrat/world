@@ -136,6 +136,9 @@ pipeline {
                         }
                     }
                 }
+                always {
+                    deleteDir()
+                }
             }
         }
     }
