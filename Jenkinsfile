@@ -107,6 +107,12 @@ pipeline {
                         }
                     }
                 }
+                failure {
+                    deleteDir()
+                }
+                aborted {
+                    deleteDir()
+                }
             }
         }
         stage('Testing') {
@@ -116,7 +122,6 @@ pipeline {
             when {
                 anyOf {
                     branch 'testing'
-                    branch 'PR*'
                 }
                 expression { return readFile('isMove.txt').contains('false') }
             }
@@ -135,6 +140,12 @@ pipeline {
                             sh "deploypkg -x -p ${pkg} -r ${REPO}-testing"
                         }
                     }
+                }
+                failure {
+                    deleteDir()
+                }
+                aborted {
+                    deleteDir()
                 }
             }
         }
