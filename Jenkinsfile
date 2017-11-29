@@ -136,9 +136,11 @@ pipeline {
                         }
                     }
                 }
-                always {
-                    deleteDir()
-                }
+            }
+        }
+        stage('Cleaning') {
+            steps {
+                deleteDir()
             }
         }
     }
