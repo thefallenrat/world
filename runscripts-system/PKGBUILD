@@ -30,7 +30,7 @@ pkgname=(
 #        'kmod-runscripts'
 )
 pkgver=20170812
-pkgrel=1
+pkgrel=2
 pkgdesc="Run scripts for services"
 arch=('any')
 url="https://github.com/cromnix/artix"
