@@ -1,0 +1,246 @@
+# Maintainer: Muhammad Herdiansyah <herdiansyah@netc.eu>
+
+_url="https://github.com/voidlinux/void-packages/raw/master/srcpkgs"
+
+_sed_args=(-e 's|/var/run|/run|g' -e 's|\(/usr\)\?/sbin|/usr/bin|g')
+
+pkgbase=runscripts-system
+pkgname=(
+        'dbus-runscripts'
+        'cronie-runscripts'
+#        'cryptsetup-runscripts'
+        'dhcpcd-runscripts'
+        'device-mapper-runscripts'
+        'glibc-runscripts'
+#        'inetutils-runscripts'
+        'lvm2-runscripts'
+        'mdadm-runscripts'
+        'nfs-utils-runscripts'
+        'rpcbind-runscripts'
+        'elogind-runscripts'
+        'gpm-runscripts'
+#        'hdparm-runscripts'
+        'iptables-runscripts'
+#        'krb5-runscripts'
+        'openldap-runscripts'
+        'openssh-runscripts'
+#        'openvpn-runscripts'
+        'wpa_supplicant-runscripts'
+        'xinetd-runscripts'
+#        'kmod-runscripts'
+)
+pkgver=20170812
+pkgrel=1
+pkgdesc="Run scripts for services"
+arch=('any')
+url="https://github.com/cromnix/artix"
+license=('BSD3')
+groups=('runscripts-system')
+conflicts=('systemd-sysvcompat')
+source=(
+        "cronie.run::${_url}/cronie/files/cronie/run"
+        "nscd.run::${_url}/glibc/files/nscd/run"
+        "dmeventd.run::${_url}/lvm2/files/dmeventd/run"
+        "lvmetad.run::${_url}/lvm2/files/lvmetad/run"
+        "mdadm.run::${_url}/mdadm/files/mdadm/run"
+        "dhcpcd.run::${_url}/dhcpcd/files/dhcpcd/run"
+        "dbus.run"
+        "dbus.check::${_url}/dbus/files/dbus/check"
+#        'ftpd.run'
+        "nfs-server.run::${_url}/nfs-utils/files/nfs-server/run"
+        "nfs-server.finish::${_url}/nfs-utils/files/nfs-server/finish"
+        "statd.run::${_url}/nfs-utils/files/statd/run"
+        "rpcbind.run::${_url}/rpcbind/files/rpcbind/run"
+        "elogind.run::${_url}/elogind/files/elogind.wrapper"
+        "udevd.run::${_url}/eudev/files/udevd/run"
+        "gpm.run::${_url}/gpm/files/gpm/run"
+        "sshd.run::${_url}/openssh/files/sshd/run"
+        "slapd.run::${_url}/openldap/files/slapd/run"
+        "iptables.run::${_url}/iptables/files/iptables/run"
+        "ip6tables.run::${_url}/iptables/files/ip6tables/run"
+        "wpa_supplicant.run::${_url}/wpa_supplicant/files/wpa_supplicant/run"
+        "https://github.com/gentoo/gentoo/raw/master/net-wireless/wpa_supplicant/files/wpa_cli.sh"
+        "xinetd.run::${_url}/xinetd/files/xinetd/run"
+)
+
+pkgver() {
+    date +%Y%m%d
+}
+
+_inst_sv(){
+    for file in run finish check; do
+        if test -f "$srcdir/$1.$file"; then
+            install -Dm755 "$srcdir/$1.$file" "$pkgdir/etc/sv/$1/$file"
+            sed "${_sed_args[@]}" -i "$pkgdir/etc/sv/$1/$file"
+        fi
+    done
+}
+
+package_cronie-runscripts() {
+    pkgdesc="Run script for cronie"
+    depends=('cronie')
+    provides=('runit-cron')
+    conflicts=('fcron' 'fcron-runscripts' 'systemd-sysvcompat')
+    backup=('etc/sv/cronie')
+
+    _inst_sv 'cronie'
+}
+
+package_dbus-runscripts() {
+    pkgdesc="Run script for dbus"
+    depends=('dbus')
+
+    _inst_sv 'dbus'
+
+    sed -e 's|dbus.pid|dbus/pid|g' -i "${pkgdir}/etc/sv/dbus"/*
+}
+
+package_dhcpcd-runscripts() {
+    pkgdesc="Run script for dhcpcd"
+    depends=('dhcpcd')
+
+    _inst_sv 'dhcpcd'
+}
+
+package_device-mapper-runscripts() {
+    pkgdesc="Run script for device-mapper"
+    depends=('device-mapper' 'runit-artix')
+
+    _inst_sv 'dmeventd'
+}
+
+package_glibc-runscripts() {
+    pkgdesc="Run script for nscd"
+    depends=('glibc')
+
+    _inst_sv 'nscd'
+}
+
+package_lvm2-runscripts() {
+	pkgdesc="Run script for lvm2 (lvmetad)"
+    depends=('lvm2')
+
+    _inst_sv "lvmetad"
+}
+
+package_mdadm-runscripts() {
+    pkgdesc="Run script for mdadm"
+    depends=('mdadm')
+
+    _inst_sv "mdadm"
+}
+
+package_syslog-ng-runscripts() {
+    pkgdesc="Run script for syslog-ng"
+    depends=('syslog-ng')
+
+    _inst_sv 'syslog-ng'
+}
+
+package_rpcbind-runscripts() {
+    pkgdesc="Run script for rpcbind"
+    depends=('rpcbind')
+
+    _inst_sv 'rpcbind'
+
+    sed -e 's|RPCBIND_OPTS|RPCBIND_ARGS|' \
+        -i "${pkgdir}/etc/sv/rpcbind"/*
+}
+
+package_nfs-utils-runscripts() {
+    pkgdesc="Run script for nfs-utils"
+	depends=('nfs-utils' 'rpcbind-runscripts' 'device-mapper-runscripts')
+
+    for f in nfs-server;do
+        _inst_sv $f
+    done
+
+#    for f in rpc.gssd rpc.idmapd rpc.pipefs rpc.statd rpc.svcgssd;do
+#        _inst_sv $f
+#    done
+}
+
+package_elogind-runscripts() {
+    pkgdesc="Run script for elogind"
+    depends=('elogind' 'dbus-runscripts' 'runit-artix')
+
+    _inst_sv 'elogind'
+}
+
+package_gpm-runscripts() {
+    pkgdesc="Run script for gpm"
+    depends=('gpm')
+
+    _inst_sv 'gpm'
+}
+
+package_openldap-runscripts() {
+    pkgdesc="Run script for openldap"
+    depends=('openldap')
+
+    _inst_sv 'slapd'
+
+    sed -e 's|/usr/lib/openldap/slapd|/usr/lib/slapd|g' \
+        -i "${pkgdir}/etc/sv/slapd"/*
+}
+
+package_openssh-runscripts() {
+    pkgdesc="Run script for openssh"
+    depends=('openssh')
+
+    _inst_sv 'sshd'
+}
+
+package_iptables-runscripts() {
+    pkgdesc="Run script for iptables"
+    depends=('iptables')
+
+    _inst_sv 'iptables'
+    _inst_sv 'ip6tables'
+}
+
+package_wpa_supplicant-runscripts() {
+    pkgdesc="Run script for wpa_supplicant"
+    depends=('wpa_supplicant')
+
+    _inst_sv 'wpa_supplicant'
+
+    install -Dm755 "${srcdir}/wpa_cli.sh" "${pkgdir}/etc/wpa_supplicant/wpa_cli.sh"
+
+    if [[ -f /etc/os-release ]];then
+        . /etc/os-release
+        sed -e "s|gentoo-release|${ID}-release|" -i "${pkgdir}/etc/wpa_supplicant/wpa_cli.sh"
+    else
+        sed -e 's|gentoo-release|arch-release|' -i "${pkgdir}/etc/wpa_supplicant/wpa_cli.sh"
+    fi
+}
+
+package_xinetd-runscripts() {
+    pkgdesc="Run script for xinetd"
+    depends=('xinetd')
+
+    _inst_sv 'xinetd'
+}
+
+sha256sums=('3ea09bc7b3753cf8ef764dd2ff8cec5cdd781deac441965e8a7238ce0c4c55d9'
+            'fe98591dda8daca6dca70a3222153178453e903f0cda4bf6075830fd68a5d23e'
+            '3c52d251f78e21a3013a856d2b3beda880ff3c7676a2149768a45d421057bbe8'
+            'ed490eab75c0ff3e2d9f1802c47478198725e9b16cfd03392f7f03d2d65b6fc2'
+            '651ab1a6b9a643bfd725c43cbac28cf0299d9b9caaf583f3c33787b48e2c86d7'
+            '49328dc461852111f343f95aeb132f26d116f1cd698c7600f7b0cd6ca21700ec'
+            'e515f1ace10b4e89967098794a1e704d4fa954d61dfe065f7e05f4842aebd66d'
+            'e81ca5cc47200a2f4df2463a46316c7a8f9f462a1f7c9579cfeca0d970921863'
+            '75a2d1228115f5bb6ff26530dbb60cc37a0ea82d03c1f19d37b5460a295afff1'
+            '6cae89df8cd52c196b25457a9603423353013f85daf99f33465129437d470ac2'
+            'f28e0b3e65534dd0776f243a596dc5300d59ee3f58f1181c1564eadd0b7fb1fd'
+            '1f3005344868b25a791bb470ba68e03e008f4755f2e0d59a5e3e8728a63b8a05'
+            'c7f062f5f126ec5f9cc1b3117a2b981c8d0ea6f8f284690dc764f4749359ee28'
+            '78bca25f04b157d6997c6480de9a23d2a65284b3362f20338b23455b9ec1214f'
+            '2d738d975256c17833b16946723b49ca02b1346b1e81d1fe1aee5dd864804e81'
+            '220dde8d4495bab6f08e063860c0ad54cc70ef8b7913a00e27126f1d5eb0af5f'
+            '4ebf5766b9847f3e4a83cb34f95d61a8bc5874be1ed818f4ca39ad4424d03c02'
+            '3a3ec37e1015e77b07e96895d17194187840fa9d6f012f9b3dfeeb4c052914d6'
+            '36399502b2e9ee05010ec3af54d79b5b9250f76bfd8bb5dcba02ad928350bb9d'
+            '52ad4a194dadd82b3be85d8c09c7bf682983ebbc9b6b85663b81ed49ebd3160f'
+            'f3aa34b99a90213c53496f8ea014c487266338791f3526043a7fd97adc651fc6'
+            'abade658564cfb5f7ed9d343be80a33195df632e82577a6574b45804ab9b7b5b')
