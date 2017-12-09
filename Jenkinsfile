@@ -107,6 +107,12 @@ pipeline {
                         }
                     }
                 }
+                failure {
+                    deleteDir()
+                }
+                aborted {
+                    deleteDir()
+                }
             }
         }
         stage('Testing') {
@@ -116,7 +122,6 @@ pipeline {
             when {
                 anyOf {
                     branch 'testing'
-                    branch 'PR*'
                 }
                 expression { return readFile('isMove.txt').contains('false') }
             }
@@ -136,6 +141,17 @@ pipeline {
                         }
                     }
                 }
+                failure {
+                    deleteDir()
+                }
+                aborted {
+                    deleteDir()
+                }
+            }
+        }
+        stage('Cleaning') {
+            steps {
+                deleteDir()
             }
         }
     }
