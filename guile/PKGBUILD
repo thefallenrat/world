@@ -27,10 +27,10 @@ build() {
   make
 }
 
-check() {
-  cd $pkgname-$pkgver
-  make check
-}
+#check() {
+#  cd $pkgname-$pkgver
+#  make check
+#}
 
 package() {
   make -C $pkgname-$pkgver DESTDIR="$pkgdir" install
