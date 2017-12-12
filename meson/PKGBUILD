@@ -34,14 +34,14 @@ build() {
   python setup.py build
 }
 
-check() {
-  cd ${pkgname}-${pkgver}
-  unset CLASSPATH  # GNUstep breaks java tests
-  LDFLAGS="${LDFLAGS/,--as-needed/}" # --as-needed breaks openmpi linking
-  export MESON_PRINT_TEST_OUTPUT=1 # set this for debug output
-  # graphviz: Installing breaks doxygen tests
-  LC_CTYPE=en_US.UTF-8 DC=ldc ./run_tests.py
-}
+#check() {
+#  cd ${pkgname}-${pkgver}
+#  unset CLASSPATH  # GNUstep breaks java tests
+#  LDFLAGS="${LDFLAGS/,--as-needed/}" # --as-needed breaks openmpi linking
+#  # export MESON_PRINT_TEST_OUTPUT=1 # set this for debug output
+#  # graphviz: Installing breaks doxygen tests
+#  LC_CTYPE=en_US.UTF-8 DC=ldc ./run_tests.py
+#}
 
 package() {
   cd ${pkgname}-${pkgver}
