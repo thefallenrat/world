@@ -1,4 +1,4 @@
-# $Id
+# $Id$
 # Maintainer: Felix Yan <felixonmars@archlinux.org>
 # Contributor: Andrea Scarpino <andrea@archlinux.org>
 
@@ -7,7 +7,7 @@ pkgname=(qt5-base qt5-xcb-private-headers)
 _qtver=5.10.0
 pkgver=${_qtver/-/}
 pkgrel=1
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url='http://qt-project.org/'
 license=('GPL3' 'LGPL3' 'FDL' 'custom')
 pkgdesc='A cross-platform application and UI framework'
@@ -55,9 +55,6 @@ prepare() {
 build() {
   cd ${_pkgfqn}
 
-  # FS#38796
-  [[ "${CARCH}" = "i686" ]] && SSE2="-no-sse2"
-
   PYTHON=/usr/bin/python2 ./configure -confirm-license -opensource -v \
     -prefix /usr \
     -docdir /usr/share/doc/qt \
@@ -75,7 +72,7 @@ build() {
     -dbus-linked \
     -system-harfbuzz \
     -no-use-gold-linker \
-    -reduce-relocations ${SSE2}
+    -reduce-relocations
   make
 }
 
