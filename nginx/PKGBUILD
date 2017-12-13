@@ -27,11 +27,9 @@ backup=(etc/nginx/fastcgi.conf
         etc/logrotate.d/nginx)
 install=nginx.install
 source=($url/download/nginx-$pkgver.tar.gz{,.asc}
-        hg+http://hg.nginx.org/nginx-tests#revision=cbda704b3093
         logrotate)
 validpgpkeys=(B0F4253373F8F6F510D42178520A9993A1C052F8) # Maxim Dounin <mdounin@mdounin.ru>
 md5sums=('4d2fc76211435f029271f1cf6d7eeae3'
-         'SKIP'
          'SKIP'
          '6a01fb17af86f03707c8ae60f98a2dc2')
 
@@ -93,11 +91,6 @@ build() {
     ${_stable_flags[@]}
 
   make
-}
-
-check() {
-  cd nginx-tests
-  TEST_NGINX_BINARY="$srcdir/$pkgname-$pkgver/objs/nginx" prove .
 }
 
 package() {
