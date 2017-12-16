@@ -42,7 +42,8 @@ build() {
     -Denable-sane=true \
     -Denable-vala=true \
     -Denable-print-profiles=true \
-    -Dwith-daemon-user=colord
+    -Dwith-daemon-user=colord \
+    -Denable-systemd=false
   ninja -C build
 }
 
