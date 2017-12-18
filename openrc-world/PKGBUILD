@@ -3,7 +3,7 @@
 _url="https://raw.githubusercontent.com/gentoo/gentoo/master"
 
 _sed_args=(-e 's|/var/run|/run|g' -e 's|/usr/sbin|/usr/bin|g' -e 's|/opt/bin|/usr/bin|g')
-prefix=true
+_prefix=true
 
 $_prefix && _sed_args+=(-e 's|#!/sbin/openrc-run|#!/usr/bin/openrc-run|g')
 
@@ -38,7 +38,7 @@ pkgname=(
 #         'ypbind-mt-openrc'
 #         'ypserv-openrc'
 #         'wicd-openrc'
-#         'nginx-openrc'
+          'nginx-openrc'
 #         'brltty-openrc'
 #         'git-openrc'
 #         'mysql-openrc'
@@ -46,9 +46,9 @@ pkgname=(
 #         'nvidia-utils-openrc'
 #         'freefall-openrc'
 #         'dnsmasq-openrc'
-          'fuse-openrc'
+#         'fuse-openrc'
 )
-pkgver=20171111
+pkgver=20171213
 pkgrel=1
 pkgdesc="OpenRC init scripts"
 arch=('any')
@@ -626,6 +626,7 @@ package_fuse-openrc() {
 
     _inst_initd 'fuse'
 }
+
 
 sha256sums=('d1c55400b701a72dcb8bb85e016b5013fa3eb6a2766ffc20dae278d0ee4c1a43'
             'cf67ba1c4bd13cc6fafdebab40b3e84d09f5b6ec768ed2dcf0ec53d9be296ba4'

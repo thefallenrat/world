@@ -1,0 +1,97 @@
+# $Id$
+# Maintainer: Evangelos Foutras <evangelos@foutrelis.com>
+
+pkgname=('geoip-database' 'geoip-database-extra')
+pkgver=20171205
+pkgrel=1
+arch=('any')
+url="https://dev.maxmind.com/geoip/legacy/geolite/"
+license=('custom:OPEN DATA LICENSE')
+checkdepends=('geoip')
+source=(GeoIP-$pkgver.dat.gz::https://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz
+        GeoIPv6-$pkgver.dat.gz::https://geolite.maxmind.com/download/geoip/database/GeoIPv6.dat.gz
+        GeoLiteCity-$pkgver.dat.gz::https://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz
+        GeoLiteCityv6-$pkgver.dat.gz::https://geolite.maxmind.com/download/geoip/database/GeoLiteCityv6-beta/GeoLiteCityv6.dat.gz
+        GeoIPASNum-$pkgver.dat.gz::https://download.maxmind.com/download/geoip/database/asnum/GeoIPASNum.dat.gz
+        GeoIPASNumv6-$pkgver.dat.gz::https://download.maxmind.com/download/geoip/database/asnum/GeoIPASNumv6.dat.gz
+        GeoIP-LICENSE.txt::https://geolite.maxmind.com/download/geoip/database/LICENSE.txt)
+noextract=(GeoIP-$pkgver.dat.gz
+           GeoIPv6-$pkgver.dat.gz
+           GeoLiteCity-$pkgver.dat.gz
+           GeoLiteCityv6-$pkgver.dat.gz
+           GeoIPASNum-$pkgver.dat.gz
+           GeoIPASNumv6-$pkgver.dat.gz)
+sha256sums=('eb1c7c8275a98df4e94966ce0af6260b0b9c20995a09a43941cd49ed880d6424'
+            '103bcb3b7b7b33db879d57631f31a195b14c793fd3e7a26d877a7e77918f8c8b'
+            '4a47770de542db6799c039f6637c1d96ebb41f3966b23f1f61d548b7f8729693'
+            '3ee04557373e4729983b81ef70fed0333ee66bcaba635983794fb43ce44b754e'
+            '68a139099f68f02c66fdb809b1939c372f79da347c8b9da65e4b6bff4e355000'
+            '81f7d1013a2d8dcd9000174a2be1cff3f716f8119ccf01baff205c393db6e577'
+            '83a4cb82ef8953c0107886b49bc39fcf77590a222d30e778d48f5d92f5b5e383')
+
+prepare() {
+  cd "$srcdir"
+
+  for _database_name in GeoIP GeoLiteCity GeoIPASNum; do
+    gunzip -c $_database_name-$pkgver.dat.gz >${_database_name/GeoLite/GeoIP}.dat
+    gunzip -c ${_database_name}v6-$pkgver.dat.gz >${_database_name/GeoLite/GeoIP}v6.dat
+  done
+}
+
+check() {
+  cd "$srcdir"
+
+  if [[ $(geoiplookup -f GeoIP.dat 8.8.8.8) != *'US, United States' ]]; then
+    error 'Unable to resolve IPv4 address to country.'
+    return 1
+  fi
+
+  if [[ $(geoiplookup6 -f GeoIPv6.dat 2001:4860:4860::8888) != *'US, United States' ]]; then
+    error 'Unable to resolve IPv6 address to country.'
+    return 1
+  fi
+
+  if [[ $(geoiplookup -f GeoIPCity.dat 8.8.8.8) != *'US, N/A, N/A'* ]]; then
+    error 'Unable to resolve IPv4 address to city.'
+    return 1
+  fi
+
+  if [[ $(geoiplookup6 -f GeoIPCityv6.dat 2001:4860:4860::8888) != *'US, N/A, N/A'* ]]; then
+    error 'Unable to resolve IPv6 address to city.'
+    return 1
+  fi
+
+  if [[ $(geoiplookup -f GeoIPASNum.dat 8.8.8.8) != *'AS15169 Google LLC' ]]; then
+    error 'Unable to resolve IPv4 address to ASN.'
+    return 1
+  fi
+
+  if [[ $(geoiplookup6 -f GeoIPASNumv6.dat 2001:4860:4860::8888) != *'AS15169 Google LLC' ]]; then
+    error 'Unable to resolve IPv6 address to ASN.'
+    return 1
+  fi
+}
+
+package_geoip-database() {
+  pkgdesc="GeoLite country geolocation database compiled by MaxMind"
+
+  cd "$srcdir"
+
+  install -d "$pkgdir/usr/share/GeoIP"
+  install -m644 -t "$pkgdir/usr/share/GeoIP" GeoIP{,v6}.dat
+
+  install -Dm644 GeoIP-LICENSE.txt "$pkgdir/usr/share/licenses/$pkgname/LICENSE.txt"
+}
+
+package_geoip-database-extra() {
+  pkgdesc="GeoLite city/ASN geolocation databases compiled by MaxMind"
+
+  cd "$srcdir"
+
+  install -d "$pkgdir/usr/share/GeoIP"
+  install -m644 -t "$pkgdir/usr/share/GeoIP" GeoIPCity{,v6}.dat GeoIPASNum{,v6}.dat
+
+  install -Dm644 GeoIP-LICENSE.txt "$pkgdir/usr/share/licenses/$pkgname/LICENSE.txt"
+}
+
+# vim:set ts=2 sw=2 et:

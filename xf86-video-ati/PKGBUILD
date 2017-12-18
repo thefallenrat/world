@@ -5,7 +5,7 @@
 pkgname=xf86-video-ati
 pkgver=7.10.0
 epoch=1
-pkgrel=1
+pkgrel=1.1
 pkgdesc="X.org ati video driver"
 arch=('i686' 'x86_64')
 url="https://xorg.freedesktop.org/"

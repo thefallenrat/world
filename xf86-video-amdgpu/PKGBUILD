@@ -3,7 +3,7 @@
 
 pkgname=xf86-video-amdgpu
 pkgver=1.4.0
-pkgrel=1
+pkgrel=1.1
 pkgdesc="X.org amdgpu video driver"
 arch=('i686' 'x86_64')
 url="https://xorg.freedesktop.org/"
