@@ -3,8 +3,8 @@
 _commit=783b0dc6b55f3a866e1c9e36b77f2a115b6ee1e3
 
 pkgname=calamares
-pkgver=3.1.7
-pkgrel=2
+pkgver=3.1.10.1
+pkgrel=1
 pkgdesc='Distribution-independent installer framework'
 arch=('i686' 'x86_64')
 license=(GPL)
@@ -12,10 +12,10 @@ url="https://github.com/artix-linux/calamares"
 license=('LGPL')
 depends=('kconfig' 'kcoreaddons' 'ki18n' 'solid' 'yaml-cpp' 'kpmcore>=3.1.0'
          'boost-libs' 'hwinfo' 'qt5-svg' 'polkit-qt5' 'gtk-update-icon-cache'
-         'pythonqt' 'kiconthemes' 'kio')
-makedepends=('extra-cmake-modules' 'qt5-tools' 'qt5-translations' 'boost' 'git')
-source=("git+https://github.com/artix-linux/calamares#commit=$_commit")
-sha256sums=('SKIP')
+         'pythonqt' 'kiconthemes' 'kio' plasma-framework)
+makedepends=('extra-cmake-modules' 'qt5-tools' 'qt5-translations' 'boost')
+source=("https://github.com/artix-linux/calamares/archive/v$pkgver.tar.gz")
+sha256sums=('224036cd24ca728e67b3457c2f443d9ba31ba5c09d39d5f4f6e8893038207b70')
 
 # pkgver() {
 #     cd $pkgname
@@ -23,12 +23,12 @@ sha256sums=('SKIP')
 # }
 
 prepare() {
-	cd $pkgname
+	cd $pkgname-$pkgver
 	# patches here
 }
 
 build() {
-	cd $pkgname
+	cd $pkgname-$pkgver
 
 	mkdir -p build
 	cd build
@@ -45,11 +45,11 @@ build() {
 }
 
 package() {
-	cd $pkgname/build
+	cd $pkgname-$pkgver/build
 	make DESTDIR="$pkgdir" install
 
     install -dm755 ${pkgdir}/etc/calamares/modules
-    cd ${srcdir}/$pkgname
+    cd ${srcdir}/$pkgname-$pkgver
     install -m755 data/artix/settings.conf ${pkgdir}/etc/calamares/settings.conf
     install -m755 data/artix/modules/{machineid,finished,displaymanager,welcome,umount,locale}.conf ${pkgdir}/etc/calamares/modules/
 }
