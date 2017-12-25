@@ -6,14 +6,13 @@
 pkgbase=bluez
 pkgname=('bluez' 'bluez-utils' 'bluez-libs' 'bluez-cups' 'bluez-hid2hci' 'bluez-plugins')
 pkgver=5.47
-pkgrel=3
+pkgrel=4
 url="http://www.bluez.org/"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 license=('GPL2')
-makedepends=('dbus' 'libical' 'eudev')
+makedepends=('dbus' 'libical' 'eudev' 'alsa-lib')
 source=(https://www.kernel.org/pub/linux/bluetooth/${pkgname}-${pkgver}.tar.{xz,sign}
         bluetooth.modprobe)
-
 # see https://www.kernel.org/pub/linux/bluetooth/sha256sums.asc
 sha256sums=('cf75bf7cd5d564f21cc4a2bd01d5c39ce425397335fd47d9bbe43af0a58342c8'
             'SKIP'
@@ -28,6 +27,7 @@ build() {
           --sysconfdir=/etc \
           --localstatedir=/var \
           --libexecdir=/usr/lib \
+          --enable-midi \
           --enable-sixaxis \
           --enable-experimental \
           --disable-systemd \
@@ -43,7 +43,7 @@ check() {
 
 package_bluez() {
   pkgdesc="Daemons for the bluetooth protocol stack"
-  depends=('libical' 'dbus' 'glib2')
+  depends=('libical' 'dbus' 'glib2' 'alsa-lib')
   backup=('etc/dbus-1/system.d/bluetooth.conf'
           'etc/bluetooth/main.conf')
   conflicts=('obexd-client' 'obexd-server')
