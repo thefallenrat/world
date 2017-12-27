@@ -35,7 +35,7 @@ build() {
         --with-dbus-sys-dir=/usr/share/dbus-1/system.d \
         --with-udev-base-dir=/usr/lib/udev \
         --with-polkit=permissive \
-        --with-suspend-resume=eudev \
+        --with-suspend-resume=no \
         --enable-gtk-doc \
         --disable-static
 
