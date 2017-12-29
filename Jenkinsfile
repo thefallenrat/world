@@ -85,13 +85,6 @@ pipeline {
                             sh "deploypkg -x -p ${pkg} -r ${REPO}"
                         }
                     }
-                    deleteDir()
-                }
-                failure {
-                    deleteDir()
-                }
-                aborted {
-                    deleteDir()
                 }
             }
         }
@@ -118,13 +111,6 @@ pipeline {
                             sh "deploypkg -x -p ${pkg} -r ${REPO}-testing"
                         }
                     }
-                    deleteDir()
-                }
-                failure {
-                    deleteDir()
-                }
-                aborted {
-                    deleteDir()
                 }
             }
         }
