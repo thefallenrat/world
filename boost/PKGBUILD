@@ -10,7 +10,7 @@
 
 pkgbase=boost
 pkgname=('boost-libs' 'boost')
-pkgver=1.66.1
+pkgver=1.66.0
 _boostver=${pkgver//./_}
 pkgrel=1
 url='http://www.boost.org/'
