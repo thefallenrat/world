@@ -3,9 +3,9 @@
 
 pkgbase=mariadb
 pkgname=('libmariadbclient' 'mariadb-clients' 'mytop' 'mariadb')
-pkgver=10.1.29
+pkgver=10.1.30
 pkgrel=1
-arch=('i686' 'x86_64')
+arch=('x86_64')
 license=('GPL')
 url='http://mariadb.org/'
 makedepends=('cmake' 'zlib' 'libaio' 'libxml2' 'openssl' 'jemalloc'
@@ -14,24 +14,28 @@ validpgpkeys=('199369E5404BD5FC7D2FE43BCBCB082A1BB943DB') # MariaDB Package Sign
 source=("https://ftp.heanet.ie/mirrors/mariadb/mariadb-$pkgver/source/mariadb-$pkgver.tar.gz"{,.asc}
         '0001-openssl-1-1-0.patch'
         '0002-mroonga-after-merge-CMakeLists.txt-fixes.patch'
-        'mariadb-sysusers.conf'
-        'mariadb-tmpfile.conf'
-        'my.cnf')
-sha256sums=('73bbd5602f52ab5aa4d83f465134871b6c87bda25371d098f6da5a3d98517ed4'
+        'dont-check-systemd.patch')
+sha256sums=('173a5e5a24819e0a469c3bd09b5c98491676c37c6095882a2ea34c5af0996c88'
             'SKIP'
             '40d298ca77c0459ade4ef9fc68a3a7450273b098b9f7edfb0a5251c5db434cfc'
             '98736aefef21e575e450f8066685ba82771264409412e33491ab0a54e4407ba7'
-            'e1a22777c65854041f16fc0a2db3218d17b4d7e7ec7ab7a77cf49c71277c1515'
-            '2af318c52ae0fe5428e8a9245d1b0fc3bc5ce153842d1563329ceb1edfa83ddd'
-            '070d755f80490874986628debd4138416f3f3b8ecfe296727cb0635c45b93fa5')
+            '11a216cda5e6cfbe6de7f3a29e802d2d0ab86da06b84935dfcdb3fb76a564267')
 
 prepare() {
   cd $pkgbase-$pkgver/
+
   # openssl 1.1.0
   patch -Np1 < "${srcdir}"/0001-openssl-1-1-0.patch
+
   # revert to fix the build
   # mroonga after-merge CMakeLists.txt fixes
   patch -Np1 -R < "${srcdir}"/0002-mroonga-after-merge-CMakeLists.txt-fixes.patch
+
+  # allow sysusers and tmpfiles install without systemd check
+  patch -Np1 < "${srcdir}"/dont-check-systemd.patch
+
+  # let's create the datadir from tmpfiles
+  echo 'd @MYSQL_DATADIR@ 0700 @MYSQLD_USER@ @MYSQLD_USER@ -' >> support-files/tmpfiles.conf.in
 }
 
 build() {
@@ -59,6 +63,8 @@ build() {
     -DINSTALL_SUPPORTFILESDIR=share/mysql \
     -DINSTALL_MYSQLSHAREDIR=share/mysql \
     -DINSTALL_SHAREDIR=share/mysql \
+    -DINSTALL_SYSTEMD_SYSUSERSDIR=/usr/lib/sysusers.d/ \
+    -DINSTALL_SYSTEMD_TMPFILESDIR=/usr/lib/tmpfiles.d/ \
     -DWITH_SYSTEMD=no \
     -DWITH_READLINE=ON \
     -DWITH_ZLIB=system \
@@ -153,18 +159,18 @@ package_mariadb() {
   # in binaries and support file. But we want our own files...
   # TOOD: Change to upstream file layout with version 10.2.x?
   rm -r etc/
-  install -Dm0644 "${srcdir}"/my.cnf etc/mysql/my.cnf
+  install -Dm0644 usr/share/mysql/my-medium.cnf etc/mysql/my.cnf
   install -Dm0644 usr/share/mysql/wsrep.cnf etc/mysql/wsrep.cnf
 
-  install -Dm0644 "${srcdir}"/mariadb-tmpfile.conf usr/lib/tmpfiles.d/mariadb.conf
-  install -Dm0644 "${srcdir}"/mariadb-sysusers.conf usr/lib/sysusers.d/mariadb.conf
-
-  install -dm0700 var/lib/mysql
-  chown -R 89:89 var/lib/mysql &>/dev/null
+  mv usr/lib/sysusers.d/{sysusers,mariadb}.conf
+  mv usr/lib/tmpfiles.d/{tmpfiles,mariadb}.conf
 
   # move to proper licenses directories
   install -d usr/share/licenses/mariadb
   mv usr/share/doc/mariadb/COPYING* usr/share/licenses/mariadb/
+
+  # left over from sysvinit
+  rm usr/bin/rcmysql
 
   # provided by libmariadbclient
   rm usr/bin/mysql_config

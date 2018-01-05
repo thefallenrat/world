@@ -1,3 +1,0 @@
-post_install() {
-    sed -e 's|^Current=.*|Current=artix|' -i etc/sddm.conf
-}

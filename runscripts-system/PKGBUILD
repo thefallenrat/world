@@ -29,11 +29,11 @@ pkgname=(
         'xinetd-runscripts'
 #        'kmod-runscripts'
 )
-pkgver=20170812
-pkgrel=2
+pkgver=20171223
+pkgrel=1
 pkgdesc="Run scripts for services"
 arch=('any')
-url="https://github.com/cromnix/artix"
+url="https://github.com/artix-linux"
 license=('BSD3')
 groups=('runscripts-system')
 conflicts=('systemd-sysvcompat')
@@ -234,7 +234,7 @@ sha256sums=('3ea09bc7b3753cf8ef764dd2ff8cec5cdd781deac441965e8a7238ce0c4c55d9'
             '6cae89df8cd52c196b25457a9603423353013f85daf99f33465129437d470ac2'
             'f28e0b3e65534dd0776f243a596dc5300d59ee3f58f1181c1564eadd0b7fb1fd'
             '1f3005344868b25a791bb470ba68e03e008f4755f2e0d59a5e3e8728a63b8a05'
-            'c7f062f5f126ec5f9cc1b3117a2b981c8d0ea6f8f284690dc764f4749359ee28'
+            'f1375235c4543f3081ddfa7c71bb4f5343b3048c7fd4d9dc312ce6163055f396'
             '78bca25f04b157d6997c6480de9a23d2a65284b3362f20338b23455b9ec1214f'
             '2d738d975256c17833b16946723b49ca02b1346b1e81d1fe1aee5dd864804e81'
             '220dde8d4495bab6f08e063860c0ad54cc70ef8b7913a00e27126f1d5eb0af5f'

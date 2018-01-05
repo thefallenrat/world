@@ -3,13 +3,13 @@
 pkgbase=sddm-theme
 pkgname=('artix-sddm-theme')
 pkgver=0.2
-pkgrel=1
+pkgrel=2
 pkgdesc="Artix theme for SDDM"
 arch=('any')
 url="https://github.com/artix-linux/sddm-theme"
 license=('GPL')
 depends=('sddm' "artix-backgrounds")
-install=artix-sddm-theme.install
+#install=artix-sddm-theme.install
 source=("${pkgbase}-${pkgver}.tar.gz::${url}/archive/${pkgver}.tar.gz")
 sha256sums=('df8b103f67c9837e86e02f133908d15bcc0a38f735bff27ac9b8865ba60d8622')
 

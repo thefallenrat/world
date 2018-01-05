@@ -1,12 +1,12 @@
-# Maintainer: Alexey D. <lq07829icatm@rambler.ru>
-# Contributor: Felix Yan <felixonmars@archlinux.org>
+# $Id$
+# Maintainer: Felix Yan <felixonmars@archlinux.org>
 # Contributor: Ionut Biru <ibiru@archlinux.org>
 
 pkgname=udisks2
-pkgver=2.7.4
+pkgver=2.7.5
 pkgrel=1
 pkgdesc="Disk Management Service, version 2"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://www.freedesktop.org/wiki/Software/udisks"
 license=('GPL2')
 depends=('polkit' 'libatasmart' 'libgudev' 'eudev' 'libblockdev')
@@ -15,38 +15,32 @@ optdepends=('gptfdisk: GUID partition table support'
             'ntfs-3g: NTFS filesystem management support'
             'dosfstools: VFAT filesystem management support'
             'libiscsi: iSCSI support')
-source=(https://github.com/storaged-project/udisks/archive/udisks-$pkgver.tar.gz)
-sha256sums=('2ca70f67cdfb4bd5b630972f72fd29eb35eb1b644e161132488446776a1d70fc')
+source=("https://github.com/storaged-project/udisks/archive/udisks-$pkgver.tar.gz")
+sha512sums=('fd49fd719d3d11ceb6349e856996f8f6f9ee58a2cc35e6622ce662096fa2e746d01958c81e464c4be6071578f4f3e39c5af81669b83582be47b191703c93e71c')
 
-prepare(){
-#     cd "udisks-udisks-$pkgver"
-    sed -e 's/AC_MSG_ERROR(\[libstoragemgmt/AC_MSG_WARN([libstoragemgmt/' \
-        -e 's/AC_MSG_ERROR(\[libconfig/AC_MSG_WARN([libconfig/' \
-        -i udisks-udisks-$pkgver/configure.ac
+prepare() {
+  sed -e 's/AC_MSG_ERROR(\[libstoragemgmt/AC_MSG_WARN([libstoragemgmt/' \
+      -e 's/AC_MSG_ERROR(\[libconfig/AC_MSG_WARN([libconfig/' \
+      -i udisks-udisks-$pkgver/configure.ac
 }
 
 build() {
-    cd "udisks-udisks-$pkgver"
-    #export LANG=en_US.UTF-8
-    ./autogen.sh \
-        --prefix=/usr \
-        --sysconfdir=/etc \
-        --localstatedir=/var \
-        --disable-static \
-        --sbindir=/usr/bin \
-        --libexecdir=/usr/lib \
-        --with-systemdsystemunitdir=no \
-        --enable-available-modules
-    make
+  cd udisks-udisks-$pkgver
+  ./autogen.sh --prefix=/usr --sysconfdir=/etc \
+      --sbindir=/usr/bin --libexecdir=/usr/lib \
+      --with-systemdsystemunitdir=no \
+      --localstatedir=/var --disable-static \
+      --enable-available-modules
+  make
 }
 
 check() {
-    cd udisks-udisks-$pkgver
-    make check
+  cd udisks-udisks-$pkgver
+  make check
 }
 
 package() {
-    cd "udisks-udisks-$pkgver"
-    make DESTDIR="$pkgdir" install \
-        bash_completiondir=/usr/share/bash-completion/completions
+  cd udisks-udisks-$pkgver
+  make DESTDIR="$pkgdir" install \
+    bash_completiondir=/usr/share/bash-completion/completions
 }
