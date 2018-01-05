@@ -1,7 +1,7 @@
 # Maintainer: artoo <artoo@cromnix.org>
 
 pkgname=calamares
-pkgver=3.1.10.1
+pkgver=3.1.12.1
 pkgrel=1
 pkgdesc='Distribution-independent installer framework'
 arch=('i686' 'x86_64')
@@ -13,7 +13,7 @@ depends=('kconfig' 'kcoreaddons' 'ki18n' 'solid' 'yaml-cpp' 'kpmcore>=3.1.0'
          'pythonqt' 'kiconthemes' 'kio' 'plasma-framework')
 makedepends=('extra-cmake-modules' 'qt5-tools' 'qt5-translations' 'boost')
 source=("https://github.com/artix-linux/calamares/archive/v$pkgver.tar.gz")
-sha256sums=('224036cd24ca728e67b3457c2f443d9ba31ba5c09d39d5f4f6e8893038207b70')
+sha256sums=('8c826caeed6b31c8f4c792b2f6f6a5f18f123139453b0e84a9527745af0718c4')
 
 prepare() {
 	cd $pkgname-$pkgver
