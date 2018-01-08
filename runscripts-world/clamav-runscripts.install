@@ -1,0 +1,4 @@
+post_install() {
+    echo -e "\033[1m==>\033[0m Make sure to set 'Foreground yes' in your clamd config file, located"
+    echo -e "\033[1m==>\033[0m in /etc/clamav/clamd.conf, or runit won't be able to supervise clamd."
+}

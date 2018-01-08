@@ -1,0 +1,516 @@
+# Maintainer: Muhammad Herdiansyah <herdiansyah@netc.eu>
+
+_url="https://github.com/voidlinux/void-packages/raw/master/srcpkgs"
+
+_sed_args=(-e 's|/var/run|/run|g' -e 's|/usr/sbin|/usr/bin|g' -e 's|/opt/bin|/usr/bin|g' -e 's|/var/service|/run/runit/service|g' -e 's|/usr/libexec|/usr/lib|g')
+
+pkgbase=runscripts-world
+pkgname=(
+         'alsa-utils-runscripts'
+         'avahi-runscripts'
+         'xdm-runscripts'
+         'lightdm-runscripts'
+         'gdm-runscripts'
+         'sddm-runscripts'
+         'bluez-runscripts'
+         'networkmanager-runscripts'
+         'syslog-ng-runscripts'
+         'cups-runscripts'
+         'ntp-runscripts'
+#         'fuse-runscripts'
+         'metalog-runscripts'
+         'sane-runscripts'
+         'lirc-runscripts'
+         'lm_sensors-runscripts'
+         'haveged-runscripts'
+         'mpd-runscripts'
+         'bitlbee-runscripts'
+         'clamav-runscripts'
+         'bind-runscripts'
+         'cyrus-sasl-runscripts'
+         'dhcp-runscripts'
+         'lighttpd-runscripts'
+         'openslp-runscripts'
+         'postfix-runscripts'
+         'rsync-runscripts'
+         'samba-runscripts'
+         'transmission-runscripts'
+#         'ypbind-mt-runscripts'
+#         'ypserv-runscripts'
+         'wicd-runscripts'
+         'nginx-runscripts'
+         'brltty-runscripts'
+         'git-runscripts'
+         'mysql-runscripts'
+         'subversion-runscripts'
+#         'nvidia-utils-runscripts'
+         'freefall-runscripts'
+         'dnsmasq-runscripts'
+)
+pkgver=20180105
+pkgrel=1
+pkgdesc="daemoontools-style service scripts for world repository"
+arch=('any')
+url="https://github.com/artix-linux"
+license=('BSD3')
+# Note: While this PKGBUILD is licensed under BSD-3 terms, all of the
+#       included runscript should follow it's main package's licenses.
+groups=('runscripts-world')
+conflicts=('systemd-sysvcompat')
+source=(
+        "alsa.run::${_url}/alsa-utils/files/alsa/run"
+        "alsa.finish::${_url}/alsa-utils/files/alsa/finish"
+        "xdm.run::${_url}/xdm/files/xdm/run"
+        "lightdm.run::${_url}/lightdm/files/lightdm/run"
+        "gdm.run::${_url}/gdm/files/gdm/run"
+        "sddm.run::${_url}/sddm/files/sddm/run"
+        "bluetoothd.run::${_url}/bluez/files/bluetoothd/run"
+        "NetworkManager.run::${_url}/NetworkManager/files/NetworkManager/run"
+        "syslog-ng.run"
+        "cupsd.run::${_url}/cups/files/cupsd/run"
+        "ntpd.run::${_url}/ntp/files/isc-ntpd/run"
+        "avahi-daemon.run::${_url}/avahi/files/avahi-daemon/run"
+#       "fuse.initd::${_url}/sys-fs/fuse/files/fuse.init"
+        "metalog.run::${_url}/metalog/files/metalog/run"
+        "lircd.run"
+        "haveged.run::${_url}/haveged/files/haveged/run"
+#        "sensord.confd::${_url}/sys-apps/lm_sensors/files/sensord.confd"
+#        "sensord.initd::${_url}/sys-apps/lm_sensors/files/sensord.initd"
+        "fancontrol.run"
+        "lm_sensors.run"
+        "lm_sensors.finish"
+        "named.run::${_url}/bind/files/named/run"
+        "saslauthd.run"
+        "saslauthd.conf"
+        "dhclient.run::${_url}/dhcp/files/dhclient/run"
+        "dhcpd4.run::${_url}/dhcp/files/dhcpd4/run"
+        "dhcpd6.run::${_url}/dhcp/files/dhcpd6/run"
+        "lighttpd.run::${_url}/lighttpd/files/lighttpd/run"
+        "slpd.run"
+        "postfix.run::${_url}/postfix/files/postfix/run"
+        "rsyncd.run::${_url}/rsync/files/rsyncd/run"
+        "smbd.run::${_url}/samba/files/smbd/run"
+        "logsmbd.run::${_url}/samba/files/smbd/log/run"
+        "nmbd.run::${_url}/samba/files/nmbd/run"
+        "lognmbd.run::${_url}/samba/files/nmbd/log/run"
+        "transmission-daemon.run::${_url}/transmission/files/transmission-daemon/run"
+#        "ypbind.confd::${_url}/net-nds/ypbind/files/ypbind.confd-r1"
+#        "ypbind.initd::${_url}/net-nds/ypbind/files/ypbind.initd"
+#        "ypserv.confd::${_url}/net-nds/ypserv/files/ypserv.confd"
+#        "rpc.yppasswdd.confd::${_url}/net-nds/ypserv/files/rpc.yppasswdd.confd"
+#        "rpc.ypxfrd.confd::${_url}/net-nds/ypserv/files/rpc.ypxfrd.confd"
+#        "ypserv.initd::${_url}/net-nds/ypserv/files/ypserv"
+#        "rpc.yppasswdd.initd::${_url}/net-nds/ypserv/files/rpc.yppasswdd-r1"
+#        "rpc.ypxfrd.initd::${_url}/net-nds/ypserv/files/rpc.ypxfrd-2.23"
+        "nginx.run::${_url}/nginx/files/nginx/run"
+        "brltty.run::${_url}/brltty/files/brltty/run"
+        "saned.run"
+        "mpd.run::${_url}/mpd/files/mpd/run"
+        "bitlbee.run::${_url}/bitlbee/files/bitlbee/run"
+        "clamd.run"
+        "wicd.run::${_url}/wicd/files/wicd/run"
+        "loggit-daemon.run"
+        "git-daemon.run"
+        "mysqld.run::${_url}/mysql/files/mysqld/run"
+        "svnserve.run::${_url}/subversion/files/svnserve/run"
+#       "nvidia-persistenced.confd::${_url}/x11-drivers/nvidia-drivers/files/nvidia-persistenced.conf"
+#       "nvidia-persistenced.initd::${_url}/x11-drivers/nvidia-drivers/files/nvidia-persistenced.init"
+        "freefall.run::${_url}/linux-tools/files/freefall/run"
+        "dnsmasq.run::${_url}/dnsmasq/files/dnsmasq/run"
+#       "fuse.initd::${_url}/sys-fs/fuse/files/fuse.init"
+)
+
+pkgver() {
+	date +%Y%m%d
+}
+
+_inst_logsv() {
+    for file in run finish check; do
+        if test -f "$srcdir/log$1.$file"; then
+            install -Dm755 "$srcdir/log$1.$file" "$pkgdir/etc/sv/$1/log/$file"
+            sed "${_sed_args[@]}" -i "$pkgdir/etc/sv/$1/log/$file"
+        fi
+    done
+}
+
+_inst_sv() {
+    if test -f "$srcdir/$1.conf"; then
+        install -Dm644 "$srcdir/$1.conf" "$pkgdir/etc/sv/$1/conf"
+    fi
+
+    for file in run finish check; do
+        if test -f "$srcdir/$1.$file"; then
+            install -Dm755 "$srcdir/$1.$file" "$pkgdir/etc/sv/$1/$file"
+            sed "${_sed_args[@]}" -i "$pkgdir/etc/sv/$1/$file"
+        fi
+    done
+}
+
+package_alsa-utils-runscripts() {
+    pkgdesc="daemontools-style runscript for alsa-utils"
+    depends=('alsa-utils')
+
+    _inst_sv 'alsa'
+}
+
+package_avahi-runscripts() {
+    pkgdesc="daemontools-style runscript for avahi"
+    depends=('avahi' 'dbus-runscripts')
+
+    _inst_sv 'avahi-daemon'
+}
+
+package_xdm-runscripts() {
+    pkgdesc="daemontools-style runscript for xdm"
+    depends=('xorg-xdm')
+
+    _inst_sv 'xdm'
+}
+
+package_lightdm-runscripts() {
+    pkgdesc="daemontools-style runscript for LightDM"
+    depends=('dbus-runscripts' 'lightdm')
+
+    _inst_sv 'lightdm'
+}
+
+package_gdm-runscripts() {
+    pkgdesc="daemontools-style runscript for GDM"
+    depends=('gdm' 'dbus-runscripts')
+
+    _inst_sv 'gdm'
+}
+
+package_sddm-runscripts() {
+    pkgdesc="daemontools-style runscript for SDDM"
+    depends=('sddm' 'dbus-runscripts')
+
+    _inst_sv 'sddm'
+}
+
+package_networkmanager-runscripts() {
+    pkgdesc="daemontools-style runscript for networkmanager"
+    depends=('dbus-runscripts' 'networkmanager')
+    conflicts=('networkmanager-consolekit')
+
+    _inst_sv 'NetworkManager'
+}
+
+package_bluez-runscripts() {
+    pkgdesc="daemontools-style runscript for bluez"
+    depends=('bluez' 'dbus-runscripts')
+
+    _inst_sv 'bluetoothd'
+}
+
+package_syslog-ng-runscripts() {
+    pkgdesc="daemontools-style runscript for syslog-ng"
+    depends=('syslog-ng')
+
+    _inst_sv 'syslog-ng'
+}
+
+package_cups-runscripts() {
+    pkgdesc="daemontools-style runscript for cups"
+    depends=('cups' 'dbus-runscripts')
+    optdepends=('avahi-runscripts: avahi initscript')
+
+    _inst_sv 'cupsd'
+}
+
+package_ntp-runscripts() {
+    pkgdesc="daemontools-style runscript for ntp"
+    depends=('ntp')
+    #optdepends=('bind-runscripts: bind initscript')
+    provides=('runscripts-timed')
+    conflicts=('openntpd' 'openntpd-runscripts')
+
+    _inst_sv 'ntpd'
+}
+
+package_clamav-runscripts() {
+    pkgdesc="daemontools-style runscript for clamav"
+    depends=('clamav')
+    install='clamav-runscripts.install'
+
+    _inst_sv 'clamd'
+}
+
+package_haveged-runscripts() {
+    pkgdesc="daemontools-style runscript for haveged"
+    depends=('haveged')
+
+    _inst_sv 'haveged'
+}
+
+package_lirc-runscripts() {
+    pkgdesc="daemontools-style runscript for lirc"
+    depends=('lirc')
+
+    _inst_sv 'lircd'
+}
+
+package_lm_sensors-runscripts() {
+    pkgdesc="daemontools-style runscript for lm_sensors"
+    depends=('lm_sensors')
+
+#    _inst_confd 'sensord'
+#    _inst_initd 'sensord'
+    _inst_sv 'fancontrol'
+    _inst_sv 'lm_sensors'
+}
+
+#package_fuse-runscripts(){
+#    pkgdesc="daemontools-style runscript for fuse"
+#    depends=('fuse')
+#
+#    _inst_initd 'fuse'
+#}
+
+package_metalog-runscripts() {
+    pkgdesc="daemontools-style runscript for metalog"
+    depends=('metalog')
+
+    _inst_sv 'metalog'
+}
+
+package_sane-runscripts() {
+    pkgdesc="daemontools-style runscript for sane"
+    depends=('sane')
+
+    _inst_sv 'saned'
+}
+
+package_bind-runscripts() {
+    pkgdesc="daemontools-style runscript for bind"
+    depends=('bind')
+
+    _inst_sv 'named'
+}
+
+package_cyrus-sasl-runscripts() {
+    pkgdesc="daemontools-style runscript for cyrus-sasl"
+    depends=('cyrus-sasl')
+    backup=('etc/sv/saslauthd/conf')
+
+    _inst_sv 'saslauthd'
+}
+
+package_dhcp-runscripts() {
+    pkgdesc="daemontools-style runscript for dhcp"
+    depends=('dhcp')
+    _inst_sv 'dhclient'
+    _inst_sv 'dhcpd4'
+    _inst_sv 'dhcpd6'
+}
+
+package_lighttpd-runscripts() {
+    pkgdesc="daemontools-style runscript for lighttpd"
+    depends=('lighttpd')
+
+    _inst_sv 'lighttpd'
+}
+
+package_openslp-runscripts() {
+    pkgdesc="daemontools-style runscript for openslp"
+    depends=('openslp')
+
+    _inst_sv 'slpd'
+}
+
+package_postfix-runscripts() {
+    pkgdesc="daemontools-style runscript for postfix"
+    depends=('postfix')
+
+    sed -i 's|/usr/libexec/postfix/master|/usr/lib/postfix/bin/master|g' "$srcdir"/postfix.run
+    _inst_sv 'postfix'
+}
+
+package_git-runscripts() {
+    pkgdesc="daemontools-style runscript for git-daemon"
+    depends=('git')
+
+    _inst_sv 'git-daemon'
+    _inst_logsv 'git-daemon'
+}
+
+package_mysql-runscripts() {
+    pkgdesc="daemontools-style runscript for mysql"
+    depends=('mysql')
+#     optdepends=('bind-runscripts: bind initscript')
+
+    _inst_sv 'mysqld'
+}
+
+package_subversion-runscripts() {
+    pkgdesc="daemontools-style runscript for svnserve"
+    depends=('subversion')
+
+    _inst_sv 'svnserve'
+}
+
+package_rsync-runscripts() {
+    pkgdesc="daemontools-style runscript for rsync"
+    depends=('rsync')
+
+    _inst_sv 'rsyncd'
+}
+
+package_samba-runscripts() {
+    pkgdesc="daemontools-style runscript for samba"
+    depends=('samba')
+
+    _inst_sv 'smbd'
+    _inst_logsv 'smbd'
+
+    _inst_sv 'nmbd'
+    _inst_logsv 'nmbd'
+}
+
+package_transmission-runscripts() {
+    pkgdesc="daemontools-style runscript for transmission"
+    depends=('transmission-cli')
+
+    _inst_sv 'transmission-daemon'
+}
+
+#package_ypbind-mt-runscripts() {
+#    pkgdesc="daemontools-style runscript for ypbind-mt"
+#    depends=('ypbind-mt' 'rpcbind-runscripts' 'openslp-runscripts')
+#    backup=('etc/conf.d/ypbind')
+#
+#    _inst_confd 'ypbind'
+#    _inst_initd 'ypbind'
+#
+#    sed -e 's|/usr/sbin|/usr/bin|g' \
+#        -i "${pkgdir}/etc/init.d/ypbind"
+#}
+
+#package_ypserv-runscripts() {
+#    pkgdesc="daemontools-style runscript for ypserv"
+#    depends=('ypserv')
+#    backup=('etc/conf.d/rpc.yppasswdd'
+#        'etc/conf.d/rpc.ypxfrd'
+#        'etc/conf.d/ypserv')
+#
+#    for f in ypserv rpc.yppasswdd rpc.ypxfrd;do
+#        _inst_confd $f
+#        _inst_initd $f
+#    done
+#
+#    for f in ${pkgdir}/etc/init.d/*;do
+#        sed -e 's|/usr/sbin|/usr/bin|g' -i $f
+#    done
+#}
+
+package_nginx-runscripts() {
+    pkgdesc="daemontools-style runscript for nginx"
+    depends=('nginx')
+
+    _inst_sv 'nginx'
+}
+
+package_wicd-runscripts() {
+    pkgdesc="daemontools-style runscript for wicd"
+    depends=('wicd')
+
+    _inst_sv 'wicd'
+}
+
+package_bitlbee-runscripts() {
+    pkgdesc="daemontools-style runscript for bitlbee"
+    depends=('bitlbee')
+
+    _inst_sv 'bitlbee'
+}
+
+package_mpd-runscripts(){
+    pkgdesc="daemontools-style runscript for mpd"
+    depends=('mpd')
+
+    _inst_sv 'mpd'
+}
+
+package_brltty-runscripts() {
+    pkgdesc="daemontools-style runscript for brltty"
+    depends=('brltty')
+
+    _inst_sv 'brltty'
+}
+
+#package_nvidia-utils-runscripts() {
+#    pkgdesc="daemontools-style runscript for nvidia persistence daemon"
+#    depends=('nvidia-utils')
+#    backup=('etc/conf.d/nvidia-persistenced')
+#
+#    _inst_confd 'nvidia-persistenced'
+#    _inst_initd 'nvidia-persistenced'
+#}
+
+package_freefall-runscripts() {
+    pkgdesc="daemontools-style runscript for freefall"
+    depends=('freefall')
+
+    _inst_sv 'freefall'
+}
+
+package_dnsmasq-runscripts() {
+    pkgdesc="daemontools-style runscript for dnsmasq"
+    depends=('dnsmasq')
+
+    _inst_sv 'dnsmasq'
+}
+
+#package_fuse-runscripts() {
+#    pkgdesc="daemontools-style runscript for fuse"
+#    depends=('fuse')
+#
+#    _inst_initd 'fuse'
+#}
+
+sha256sums=('b9f19c950711c45a8205ea52ca731387038a8b957798b73025f35c0656db7474'
+            'd00e9ef211c9f11b3ef836c5ee7c6b763cacb426fbd3d9697f03048e55c0c21c'
+            '407ef3ac05371c989668a16d068798f5a3af622ba1a93cc5db2b027766e71053'
+            '092cf2c0eeba2f503d3b894aff978916a973a64f9a76f645ed78f60c8f2d790f'
+            'c3c91200c145b1c6aeb2973481848b0bed2c25f0089bd304785a0ba40c738f6f'
+            'aad8a13a3ddf4a6781ffe4c0c440b8177418a70b03ca94c309324f50af279d94'
+            '8ab29771e3000314c7e356190db0a44b19de1b6865389811f4b8d8548725255a'
+            'bd313b32a68a7938950b104470e0240758a9538111029c11994355db0c2705e9'
+            '479057f277a7f3b40f115256149a6ce34b7f57332964235a29d8df223332870a'
+            '1db6a12394ff0555409207e282e496ab5a4e3b79567bdc66ee03aade75928375'
+            '5268dc1706fe24df745af5c668dd8e6c51b2386bd4437c70af6de94e94801b2f'
+            '46ea509ae7bab80c1dc5f8c638454bfb6ed2d0de0459e86e0a08826f63b34617'
+            '357434befd93d8637cf0f773fd71ec2132e2fd6a3046c349e2163316a7f56a32'
+            'c7f73528f4772dee888dc000b99a4237eca344ba31948bd796dcd9cf8fcf1a5d'
+            'fa32cb565083aba02742f1a72a66bdefeaff59be4dec3a08a634a44985a55512'
+            'b3f162e08366d61f3c4db33a15d4e96df82e457b8ce98809f99f2f556f345f2e'
+            '81f2ce890417d74db28c69dc8248f44afae0afc4ed2f14f7185287e05c57dcd3'
+            '769d33869f3b87b123c30f3c25fb026c6fe9e5f49b68bf806f5cf980c32c457b'
+            'e74f1ddfbf4884260bb9e9149ba7d5bfd2351d3a1fa535275de79f04d7357db1'
+            '1d2682575f0134f6a0de20c9fbb606e4c8f72aa9ee357c31963bdc46abe5b774'
+            'fa57b4f374ae633633091b1c8b44e1e0be814e4fddbfa75f16eb3dd1f16b8640'
+            'f351d7a77ec4ae3e4eeb9e11fc354bd76999041a0dc4b010c28db79bb180b85e'
+            'e9b97d568b8e86a74d8dc8774f61fa9c50fe273805d6080d4c192223e013e689'
+            '9272cc1d3a882ed44023d0289633b601551f985fbc42831e3866daad8c2a69d5'
+            '6dfb73bb657cf7f52eddcd4cfd7f81ef6d339b110167e5f3ffd380be2c225a8b'
+            '08d24933c94c4ae9a981af3d1fa8962a66df2f77724ee2d049cc97ad29f8dea6'
+            '27618588ac879f43267f65f2a200f1b3fa4dd2a4e7c0711a782078cdf53f5a8f'
+            '7352a0cb1a8c7a427e3f4011f54049a35764bf9c4e029ab38c0c1b7992e307e9'
+            '610d221e39f81f635a39ec57c86c02ef05d1510e1c0e383dfb617aa78da24743'
+            'dbc8da9e934f3ec99020b10958e2de2cda7174385547b71f51e6d1af05268d02'
+            '5d07e1196904031efd8d7ac840baf638af88edbf883a5fd50c531384fa3f42fb'
+            '3e87cec9a2d9d88982b55cd38e26c09c44e2fd545a2918cba71c7317ef095af4'
+            '9dc3fa97c34942c03c5d4c409675ad1ad1fbce27c0ed74c1a40f775f0e05f417'
+            'c335100e3e5afa859d0f283828ab5ba9b53ee242a5b3e2cbe843716ca004119e'
+            'ee62a1f937d2b9606c23f7cc23185def35855e2a5775ce1d1c94d04f1fbd90ed'
+            'ba8fc0fd1a080b6a7baff44cb09690b3952b05bb48c8208cb7d3706e1a58ff76'
+            '0a3f2733ad9982d5ac362e9d6440efcac810ac529670459537e0d46f0e2c03cd'
+            'c1882fa90d6b7b7d83578c6487c05c3db76a4810237cbdf93fb1d9a684bfb536'
+            '05e8e08633db262e0e9aa2127e2591d07a68cbe2a393aa3e2a1daf1695f7b12c'
+            'dfe6464b493c9d27446d84b72dd168aead6436cfafa00eb069a916d68bcea369'
+            '29555fc3b48e7f07540c594f192184736268a33d640c8908fe42cd2571af4b87'
+            '77850930ae3df6a0f495caf55ebff188bbb3a8f79b41f9da330bc6fea2292202'
+            '46dd414421ef287522fc7b585ad21d440ad4c9454033a76e9a104dc1f8ab0528'
+            '4cc8012d96cb34536e7f372da55f61c3d38684189616c40cba16581ad286fa44'
+            '56d0f31c0a3564d1350a6d0bce21524ed7346557603b37198f03555a8fdfefa1'
+            '535c6160055b3a3aef6ddf9aae763bedc2afcbd1f113986a195f225f629d558c')
