@@ -47,7 +47,7 @@ pkgname=(
          'freefall-runscripts'
          'dnsmasq-runscripts'
 )
-pkgver=20180105
+pkgver=20180108
 pkgrel=1
 pkgdesc="daemoontools-style service scripts for world repository"
 arch=('any')
