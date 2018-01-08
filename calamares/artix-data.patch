@@ -1,0 +1,246 @@
+From 5be2c5d3ccba590202772f4cab62507f68572a39 Mon Sep 17 00:00:00 2001
+From: udeved <artoo@cromnix.org>
+Date: Mon, 18 Dec 2017 23:30:19 +0100
+Subject: [PATCH] add artix data
+
+---
+ data/artix/modules/bootloader.conf     | 12 ++++++++++
+ data/artix/modules/displaymanager.conf | 10 ++++++++
+ data/artix/modules/finished.conf       |  4 ++++
+ data/artix/modules/initcpio.conf       |  2 ++
+ data/artix/modules/locale.conf         |  3 +++
+ data/artix/modules/machineid.conf      |  4 ++++
+ data/artix/modules/netinstall.conf     |  2 ++
+ data/artix/modules/servicescfg.conf    | 22 ++++++++++++++++++
+ data/artix/modules/umount.conf         |  3 +++
+ data/artix/modules/users.conf          | 18 +++++++++++++++
+ data/artix/modules/welcome.conf        | 20 ++++++++++++++++
+ data/artix/settings.conf               | 42 ++++++++++++++++++++++++++++++++++
+ 12 files changed, 142 insertions(+)
+ create mode 100644 data/artix/modules/bootloader.conf
+ create mode 100644 data/artix/modules/displaymanager.conf
+ create mode 100644 data/artix/modules/finished.conf
+ create mode 100644 data/artix/modules/initcpio.conf
+ create mode 100644 data/artix/modules/locale.conf
+ create mode 100644 data/artix/modules/machineid.conf
+ create mode 100644 data/artix/modules/netinstall.conf
+ create mode 100644 data/artix/modules/servicescfg.conf
+ create mode 100644 data/artix/modules/umount.conf
+ create mode 100644 data/artix/modules/users.conf
+ create mode 100644 data/artix/modules/welcome.conf
+ create mode 100644 data/artix/settings.conf
+
+diff --git a/data/artix/modules/bootloader.conf b/data/artix/modules/bootloader.conf
+new file mode 100644
+index 000000000..d8e5076b0
+--- /dev/null
++++ b/data/artix/modules/bootloader.conf
+@@ -0,0 +1,12 @@
++---
++efiBootLoader: "grub"
++kernel: "/vmlinuz-linux-lts-x86_64"
++img: "/initramfs-linux-lts-x86_64.img"
++fallback: "/initramfs-linux-lts-x86_64-fallback.img"
++timeout: "10"
++kernelLine: ", with linux-lts"
++fallbackKernelLine: ", with linux-lts (fallback initramfs)"
++grubInstall: "grub-install"
++grubMkconfig: "grub-mkconfig"
++grubCfg: "/boot/grub/grub.cfg"
++#efiBootloaderId: "dirname"
+diff --git a/data/artix/modules/displaymanager.conf b/data/artix/modules/displaymanager.conf
+new file mode 100644
+index 000000000..1e9ad2b92
+--- /dev/null
++++ b/data/artix/modules/displaymanager.conf
+@@ -0,0 +1,10 @@
++---
++displaymanagers:
++  - lightdm
++  - gdm
++  - mdm
++  - sddm
++  - lxdm
++  - slim
++
++basicSetup: false
+diff --git a/data/artix/modules/finished.conf b/data/artix/modules/finished.conf
+new file mode 100644
+index 000000000..ecca3d2bb
+--- /dev/null
++++ b/data/artix/modules/finished.conf
+@@ -0,0 +1,4 @@
++---
++restartNowEnabled: true
++restartNowChecked: false
++restartNowCommand: "loginctl reboot"
+diff --git a/data/artix/modules/initcpio.conf b/data/artix/modules/initcpio.conf
+new file mode 100644
+index 000000000..9f4e2589d
+--- /dev/null
++++ b/data/artix/modules/initcpio.conf
+@@ -0,0 +1,2 @@
++---
++kernel: linux-lts
+diff --git a/data/artix/modules/locale.conf b/data/artix/modules/locale.conf
+new file mode 100644
+index 000000000..6b5ba3250
+--- /dev/null
++++ b/data/artix/modules/locale.conf
+@@ -0,0 +1,3 @@
++---
++localeGenPath: /etc/locale.gen
++geoipUrl: freegeoip.net
+diff --git a/data/artix/modules/machineid.conf b/data/artix/modules/machineid.conf
+new file mode 100644
+index 000000000..a5c1c054d
+--- /dev/null
++++ b/data/artix/modules/machineid.conf
+@@ -0,0 +1,4 @@
++---
++systemd: false
++dbus: true
++symlink: true
+diff --git a/data/artix/modules/netinstall.conf b/data/artix/modules/netinstall.conf
+new file mode 100644
+index 000000000..76a17dda5
+--- /dev/null
++++ b/data/artix/modules/netinstall.conf
+@@ -0,0 +1,2 @@
++---
++groupsUrl: https://raw.githubusercontent.com/artix-linux/netgroups/master/netgroups-openrc.yaml
+diff --git a/data/artix/modules/servicescfg.conf b/data/artix/modules/servicescfg.conf
+new file mode 100644
+index 000000000..0a2837418
+--- /dev/null
++++ b/data/artix/modules/servicescfg.conf
+@@ -0,0 +1,22 @@
++---
++
++services:
++    enabled:
++      - name: elogind
++        runlevel: boot
++      - name: acpid
++        runlevel: default
++      - name: bluetooth
++        runlevel: default
++      - name: cronie
++        runlevel: default
++      - name: cupsd
++        runlevel: default
++      - name: dbus
++        runlevel: default
++      - name: syslog-ng
++        runlevel: default
++      - name: NetworkManager
++        runlevel: default
++      - name: xdm
++        runlevel: default
+diff --git a/data/artix/modules/umount.conf b/data/artix/modules/umount.conf
+new file mode 100644
+index 000000000..d1fadd826
+--- /dev/null
++++ b/data/artix/modules/umount.conf
+@@ -0,0 +1,3 @@
++---
++srcLog: "/root/.cache/Calamares/Calamares/Calamares.log"
++destLog: "/var/log/Calamares.log"
+diff --git a/data/artix/modules/users.conf b/data/artix/modules/users.conf
+new file mode 100644
+index 000000000..9394b1ddc
+--- /dev/null
++++ b/data/artix/modules/users.conf
+@@ -0,0 +1,18 @@
++---
++defaultGroups:
++    - video
++    - power
++    - storage
++    - optical
++    - network
++    - lp
++    - scanner
++    - wheel
++    - users
++autologinGroup:  autologin
++doAutologin:     false
++sudoersGroup:    wheel
++setRootPassword: true
++doReusePassword: false
++availableShells: /bin/bash, /bin/zsh
++avatarFilePath:  ~/.face
+diff --git a/data/artix/modules/welcome.conf b/data/artix/modules/welcome.conf
+new file mode 100644
+index 000000000..8c52bfa13
+--- /dev/null
++++ b/data/artix/modules/welcome.conf
+@@ -0,0 +1,20 @@
++---
++showSupportUrl:         true
++showKnownIssuesUrl:     true
++showReleaseNotesUrl:    true
++
++requirements:
++    requiredStorage:    7.9
++    requiredRam:        1.0
++    internetCheckUrl:   https://artixlinux.org
++    check:
++      - storage
++      - ram
++      - power
++      - internet
++      - root
++    required:
++      - storage
++      - ram
++      - root
++      - internet
+diff --git a/data/artix/settings.conf b/data/artix/settings.conf
+new file mode 100644
+index 000000000..dcffc9cdb
+--- /dev/null
++++ b/data/artix/settings.conf
+@@ -0,0 +1,42 @@
++---
++modules-search: [ local ]
++
++sequence:
++    - show:
++        - welcome
++        - locale
++        - keyboard
++        - partition
++        - users
++        - netinstall
++        - summary
++    - exec:
++        - partition
++        - mount
++        - chrootcfg
++        - networkcfg
++        - machineid
++        - fstab
++        - locale
++        - keyboard
++        - localecfg
++        - luksopenswaphookcfg
++        - luksbootkeyfile
++        - initcpiocfg
++        - initcpio
++        - users
++        - displaymanager
++        - hwclock
++        - servicescfg
++        - grubcfg
++        - bootloader
++        - postcfg
++        - umount
++    - show:
++        - finished
++
++branding: artix
++
++prompt-install: false
++
++dont-chroot: false

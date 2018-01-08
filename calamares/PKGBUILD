@@ -2,7 +2,8 @@
 
 pkgname=calamares
 pkgver=3.1.12.1
-pkgrel=1
+_pkgver=3.1.12
+pkgrel=2
 pkgdesc='Distribution-independent installer framework'
 arch=('i686' 'x86_64')
 license=(GPL)
@@ -12,16 +13,32 @@ depends=('kconfig' 'kcoreaddons' 'ki18n' 'solid' 'yaml-cpp' 'kpmcore>=3.1.0'
          'boost-libs' 'hwinfo' 'qt5-svg' 'polkit-qt5' 'gtk-update-icon-cache'
          'pythonqt' 'kiconthemes' 'kio' 'plasma-framework')
 makedepends=('extra-cmake-modules' 'qt5-tools' 'qt5-translations' 'boost')
-source=("https://github.com/artix-linux/calamares/archive/v$pkgver.tar.gz")
-sha256sums=('8c826caeed6b31c8f4c792b2f6f6a5f18f123139453b0e84a9527745af0718c4')
+source=("https://github.com//calamares/calamares/archive/v$_pkgver.tar.gz"
+        artix-modules.patch
+        artix-data.patch
+        artix-branding.patch
+        squid.png
+        logo.png
+        languages.png)
+sha256sums=('49dc6891e9d44070fca6dfa154d4775becfb0730696afb5287dd549d9fd8907f'
+            '3b85ce86f91bf4703d9a2f223d72b4db65bd1fb9e0ac7eb75155ab13a67b746d'
+            'a00f988d4ee3a61191c4533b696c95584067286781d0b966c58fe355b3a7eea2'
+            '050582b3f9d4035bdd40b7e27fa1e38143923c81db6d13fff45cbe6118cf946e'
+            'd824aecb90e95103f7677c3734078aa9610550c8e776ea342e9f92b3a642e327'
+            '1dbb6e75dd191a507fa50ef6564b3348099e0061eb8eca2288b918875c496db8'
+            'c937b6494c01fc1291dfe1ec1a391f04921ee071778d065f295fb735d74c9911')
 
 prepare() {
-	cd $pkgname-$pkgver
+	cd $pkgname-$_pkgver
 	# patches here
+	
+	patch -Np 1 -i $srcdir/artix-modules.patch
+	patch -Np 1 -i $srcdir/artix-data.patch
+	patch -Np 1 -i $srcdir/artix-branding.patch
 }
 
 build() {
-	cd $pkgname-$pkgver
+	cd $pkgname-$_pkgver
 
 	mkdir -p build
 	cd build
@@ -38,11 +55,14 @@ build() {
 }
 
 package() {
-	cd $pkgname-$pkgver/build
+	cd $pkgname-$_pkgver/build
 	make DESTDIR="$pkgdir" install
 
+    cd ${srcdir}/$pkgname-$_pkgver
+    
     install -dm755 ${pkgdir}/etc/calamares/modules
-    cd ${srcdir}/$pkgname-$pkgver
-    install -m755 data/artix/settings.conf ${pkgdir}/etc/calamares/settings.conf
-    install -m755 data/artix/modules/{machineid,finished,displaymanager,welcome,umount,locale}.conf ${pkgdir}/etc/calamares/modules/
+    install -m644 data/artix/settings.conf ${pkgdir}/etc/calamares/settings.conf
+    install -m644 data/artix/modules/{machineid,finished,displaymanager,welcome,umount,locale}.conf ${pkgdir}/etc/calamares/modules/
+    
+    install -m644 ${srcdir}/{squid,logo,languages}.png ${pkgdir}/usr/share/calamares/branding/artix/
 }
