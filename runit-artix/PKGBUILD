@@ -2,13 +2,14 @@
 
 pkgname=runit-artix
 pkgver=20180108
-pkgrel=1
+pkgrel=2
 pkgdesc='Runit initscripts for Artix'
 provides=('runit-init')
 url='https://github.com/artix-linux/runit-artix/'
 license=('custom:CC0')
 arch=('i686' 'x86_64')
 depends=('procps-ng' 'awk' 'sh' 'eudev')
+install='runit-artix.install'
 source=("${pkgname}-${pkgver}.tar.gz::https://github.com/artix-linux/runit-artix/archive/${pkgver}.tar.gz")
 backup=('etc/runit/rc.conf'
         'etc/runit/rc.local'
