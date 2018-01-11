@@ -3,7 +3,7 @@
 
 pkgbase=doxygen
 pkgname=('doxygen' 'doxygen-docs')
-pkgver=1.8.13
+pkgver=1.8.13 # Plese rebuild
 pkgrel=3
 license=('GPL')
 arch=(i686 x86_64)
