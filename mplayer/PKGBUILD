@@ -14,9 +14,9 @@ license=('GPL')
 makedepends=('libxxf86dga' 'libmad' 'libxinerama' 'libmng' 'libxss' 'smbclient' 'aalib' 'jack'
              'libcaca' 'faac' 'faad2' 'lirc'  'libxvmc' 'enca' 'libdca' 'a52dec' 'libvpx' 'unzip'
              'mesa' 'live-media' 'yasm' 'git' 'mpg123' 'ladspa' 'libcdio-paranoia' 'subversion'
-             'x264' 'libx264' 'rtmpdump' 'libdvdcss' 'libdvdread' 'libdvdnav' 'ffmpeg' 'pacman')
+             'x264' 'libx264' 'rtmpdump' 'libdvdcss' 'libdvdread' 'libdvdnav' 'ffmpeg' 'pacman' 'subversion')
 options=('!buildflags' '!emptydirs')
-source=(${pkgbase}-${pkgver}::"svn://svn.mplayerhq.hu/mplayer/trunk#revision=${pkgver}"
+source=(${pkgbase}-${pkgver}.tar.bz2::"http://www.mplayerhq.hu/MPlayer/releases/mplayer-checkout-snapshot.tar.bz2"
         mplayer.desktop
         include-samba-4.0.patch
         revert-icl-fixes.patch)
@@ -26,14 +26,15 @@ sha512sums=('SKIP'
             '0cae0b26d3d97fd4c962962c43a481de20335369cbca406cadfc9bda1a0608b32f5374e76c477cb9a85bda83a568a1ed17126df224ae61579d0a402c1824aea8')
 
 prepare() {
-  cd ${pkgbase}-${pkgver}
+  cd ${pkgbase}-checkout*
+  svn update -r ${pkgver}
   patch -p1 < "../include-samba-4.0.patch"
   patch -p0 < "../revert-icl-fixes.patch"
   ./version.sh
 }
 
 build() {
-  cd ${pkgbase}-${pkgver}
+  cd ${pkgbase}-checkout*
   ./configure --prefix=/usr \
     --enable-runtime-cpudetection \
     --disable-gui \
@@ -66,7 +67,7 @@ package_mplayer() {
            'jack' 'libmad' 'libcaca' 'libxxf86dga' 'faac' 'faad2' 'libxvmc' 'mpg123'
            'libcdio-paranoia' 'rtmpdump' 'libdvdnav' 'ffmpeg')
 
-  cd ${pkgbase}-${pkgver}
+  cd ${pkgbase}-checkout*
   make DESTDIR="${pkgdir}" install-mplayer install-mplayer-man
 
   install -Dm 644 etc/{codecs.conf,input.conf,example.conf} "${pkgdir}/etc/mplayer"
