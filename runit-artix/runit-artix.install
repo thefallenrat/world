@@ -3,8 +3,7 @@ post_install() {
     echo -e "\033[1m==>\033[0m /usr/lib/runit-artix/bin to /usr/bin."
 }
 
-
-post_install() {
+post_upgrade() {
     echo -e "\033[1m==>\033[0m All binaries in this package has moved to /usr/lib/runit-artix, make"
     echo -e "\033[1m==>\033[0m sure to update your symlinks."
 }
