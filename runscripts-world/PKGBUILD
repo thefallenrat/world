@@ -6,48 +6,48 @@ _sed_args=(-e 's|/var/run|/run|g' -e 's|/usr/sbin|/usr/bin|g' -e 's|/opt/bin|/us
 
 pkgbase=runscripts-world
 pkgname=(
-         'alsa-utils-runscripts'
-         'avahi-runscripts'
-         'xdm-runscripts'
+#         'alsa-utils-runscripts'
+#         'avahi-runscripts'
+#         'xdm-runscripts'
          'lightdm-runscripts'
-         'gdm-runscripts'
-         'sddm-runscripts'
-         'bluez-runscripts'
-         'networkmanager-runscripts'
-         'syslog-ng-runscripts'
-         'cups-runscripts'
-         'ntp-runscripts'
+#         'gdm-runscripts'
+#         'sddm-runscripts'
+#         'bluez-runscripts'
+#         'networkmanager-runscripts'
+#         'syslog-ng-runscripts'
+#         'cups-runscripts'
+#         'ntp-runscripts'
 #         'fuse-runscripts'
-         'metalog-runscripts'
-         'sane-runscripts'
-         'lirc-runscripts'
-         'lm_sensors-runscripts'
-         'haveged-runscripts'
-         'mpd-runscripts'
-         'bitlbee-runscripts'
-         'clamav-runscripts'
-         'bind-runscripts'
-         'cyrus-sasl-runscripts'
-         'dhcp-runscripts'
-         'lighttpd-runscripts'
-         'openslp-runscripts'
-         'postfix-runscripts'
-         'rsync-runscripts'
-         'samba-runscripts'
-         'transmission-runscripts'
+#         'metalog-runscripts'
+#         'sane-runscripts'
+#         'lirc-runscripts'
+#         'lm_sensors-runscripts'
+#         'haveged-runscripts'
+#         'mpd-runscripts'
+#         'bitlbee-runscripts'
+#         'clamav-runscripts'
+#         'bind-runscripts'
+#         'cyrus-sasl-runscripts'
+#         'dhcp-runscripts'
+#         'lighttpd-runscripts'
+#         'openslp-runscripts'
+#         'postfix-runscripts'
+#         'rsync-runscripts'
+#         'samba-runscripts'
+#         'transmission-runscripts'
 #         'ypbind-mt-runscripts'
 #         'ypserv-runscripts'
-         'wicd-runscripts'
-         'nginx-runscripts'
-         'brltty-runscripts'
-         'git-runscripts'
-         'mysql-runscripts'
-         'subversion-runscripts'
+#         'wicd-runscripts'
+#         'nginx-runscripts'
+#         'brltty-runscripts'
+#         'git-runscripts'
+#         'mysql-runscripts'
+#         'subversion-runscripts'
 #         'nvidia-utils-runscripts'
-         'freefall-runscripts'
-         'dnsmasq-runscripts'
+#         'freefall-runscripts'
+#         'dnsmasq-runscripts'
 )
-pkgver=20180108
+pkgver=20180112
 pkgrel=1
 pkgdesc="daemoontools-style service scripts for world repository"
 arch=('any')
@@ -61,7 +61,7 @@ source=(
         "alsa.run::${_url}/alsa-utils/files/alsa/run"
         "alsa.finish::${_url}/alsa-utils/files/alsa/finish"
         "xdm.run::${_url}/xdm/files/xdm/run"
-        "lightdm.run::${_url}/lightdm/files/lightdm/run"
+        "lightdm.run"
         "gdm.run::${_url}/gdm/files/gdm/run"
         "sddm.run::${_url}/sddm/files/sddm/run"
         "bluetoothd.run::${_url}/bluez/files/bluetoothd/run"
@@ -471,7 +471,7 @@ package_dnsmasq-runscripts() {
 sha256sums=('b9f19c950711c45a8205ea52ca731387038a8b957798b73025f35c0656db7474'
             'd00e9ef211c9f11b3ef836c5ee7c6b763cacb426fbd3d9697f03048e55c0c21c'
             '407ef3ac05371c989668a16d068798f5a3af622ba1a93cc5db2b027766e71053'
-            '092cf2c0eeba2f503d3b894aff978916a973a64f9a76f645ed78f60c8f2d790f'
+            'b7b1688e9eff041df033ed9652f452fc0eeb808cde1e836648754d60c67998a1'
             'c3c91200c145b1c6aeb2973481848b0bed2c25f0089bd304785a0ba40c738f6f'
             'aad8a13a3ddf4a6781ffe4c0c440b8177418a70b03ca94c309324f50af279d94'
             '8ab29771e3000314c7e356190db0a44b19de1b6865389811f4b8d8548725255a'

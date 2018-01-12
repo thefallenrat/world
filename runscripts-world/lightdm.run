@@ -1,0 +1,6 @@
+#!/bin/sh
+sv check dbus >/dev/null || exit 1
+install -d -m0711 -olightdm -glightdm /run/lightdm
+install -d -m0711 -olightdm -glightdm /var/lib/lightdm
+install -d -m0711 -olightdm -glightdm /var/lib/lightdm-data
+exec lightdm
