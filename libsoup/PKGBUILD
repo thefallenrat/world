@@ -44,10 +44,10 @@ build() {
   make
 }
 
-check() {
-  cd $pkgname
-  make check
-}
+#check() {
+#  cd $pkgname
+#  make check
+#}
 
 package() {
   cd $pkgname
