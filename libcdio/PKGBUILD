@@ -3,7 +3,7 @@
 # Contributor: damir <damir@archlinux.org>
 
 pkgname=libcdio
-pkgver=2.0.0
+pkgver=2.0.0 # rebuild
 pkgrel=1
 pkgdesc="GNU Compact Disc Input and Control Library"
 url="https://www.gnu.org/software/libcdio/"
