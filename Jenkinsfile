@@ -62,33 +62,7 @@ pipeline {
                 sh "deploypkg -m -r ${REPO}-testing -t ${REPO}"
             }
         }
-        stage('Stable') {
-            environment {
-                BUILDBOT_GPGP = credentials('BUILDBOT_GPGP')
-            }
-            when {
-                branch 'master'
-                expression { return  IS_MOVE == 'false' }
-            }
-            steps {
-                echo "PACKAGES: ${PACKAGES}"
-                script {
-                    for (pkg in PACKAGES) {
-                        sh "buildpkg -p ${pkg} -z ${REPO}"
-                    }
-                }
-            }
-            post {
-                success {
-                    script {
-                        for (pkg in PACKAGES) {
-                            sh "deploypkg -x -p ${pkg} -r ${REPO}"
-                        }
-                    }
-                }
-            }
-        }
-        stage('Testing') {
+        stage('Build') {
             environment {
                 BUILDBOT_GPGP = credentials('BUILDBOT_GPGP')
             }
