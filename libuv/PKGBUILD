@@ -21,10 +21,10 @@ build() {
 	make man -C docs
 }
 
-check() {
-	cd $pkgname-$pkgver
-	make check
-}
+# check() {
+# 	cd $pkgname-$pkgver
+# 	make check
+# }
 
 package() {
 	cd $pkgname-$pkgver
