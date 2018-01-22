@@ -6,30 +6,30 @@ _sed_args=(-e 's|/var/run|/run|g' -e 's|\(/usr\)\?/sbin|/usr/bin|g')
 
 pkgbase=runscripts-system
 pkgname=(
-        'dbus-runscripts'
-        'cronie-runscripts'
+#        'dbus-runscripts'
+#        'cronie-runscripts'
 #        'cryptsetup-runscripts'
-        'dhcpcd-runscripts'
-        'device-mapper-runscripts'
-        'glibc-runscripts'
+#        'dhcpcd-runscripts'
+#        'device-mapper-runscripts'
+#        'glibc-runscripts'
 #        'inetutils-runscripts'
-        'lvm2-runscripts'
-        'mdadm-runscripts'
-        'nfs-utils-runscripts'
-        'rpcbind-runscripts'
+#        'lvm2-runscripts'
+#        'mdadm-runscripts'
+#        'nfs-utils-runscripts'
+#        'rpcbind-runscripts'
         'elogind-runscripts'
-        'gpm-runscripts'
+#        'gpm-runscripts'
 #        'hdparm-runscripts'
-        'iptables-runscripts'
+#        'iptables-runscripts'
 #        'krb5-runscripts'
-        'openldap-runscripts'
-        'openssh-runscripts'
+#        'openldap-runscripts'
+#        'openssh-runscripts'
 #        'openvpn-runscripts'
-        'wpa_supplicant-runscripts'
-        'xinetd-runscripts'
+#        'wpa_supplicant-runscripts'
+#        'xinetd-runscripts'
 #        'kmod-runscripts'
 )
-pkgver=20171223
+pkgver=20180107
 pkgrel=1
 pkgdesc="Run scripts for services"
 arch=('any')

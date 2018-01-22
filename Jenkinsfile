@@ -1,7 +1,5 @@
 def REPO = 'world'
 def PACKAGES = []
-def GIT_CURRENT_COMMIT = ''
-def GIT_LAST_MERGE_COMMIT = ''
 def IS_MOVE = 'false'
 
 pipeline {
@@ -15,32 +13,25 @@ pipeline {
             steps {
                 script {
                     checkout scm
-                    GIT_CURRENT_COMMIT = sh(returnStdout: true, script: 'git rev-parse @').trim()
-                    GIT_LAST_MERGE_COMMIT = sh(returnStdout: true, script: 'git log --merges --oneline --format=format:%H -n 1').trim()
 
-                    echo "GIT_CURRENT_COMMIT: ${GIT_CURRENT_COMMIT}"
-                    echo "GIT_LAST_MERGE_COMMIT: ${GIT_LAST_MERGE_COMMIT}"
+                    def current_commit = sh(returnStdout: true, script: 'git rev-parse @').trim()
+                    def last_merge_commit = sh(returnStdout: true, script: 'git log --merges --oneline --format=format:%H -n 1').trim()
+
+                    echo "current_commit: ${current_commit}"
+                    echo "last_merge_commit: ${last_merge_commit}"
 
                     if ( BRANCH_NAME == 'master' ) {
-                        if ( GIT_CURRENT_COMMIT == GIT_LAST_MERGE_COMMIT ) {
+                        if ( current_commit == last_merge_commit ) {
                             IS_MOVE = 'true'
                         }
                     } else if ( BRANCH_NAME == 'testing' ) {
-                        if ( GIT_CURRENT_COMMIT == GIT_LAST_MERGE_COMMIT ) {
-                            GIT_CURRENT_COMMIT = sh(returnStdout: true, script: "git rev-parse @~").trim()
+                        if ( current_commit == last_merge_commit ) {
+                            current_commit = sh(returnStdout: true, script: "git rev-parse @~").trim()
                         }
                     }
                     echo "IS_MOVE: ${IS_MOVE}"
-                }
-            }
-        }
-        stage('Prepare') {
-            when {
-                expression { return  IS_MOVE == 'false' }
-            }
-            steps {
-                script {
-                    def changed_files = sh(returnStdout: true, script: "git show --pretty=format: --name-only ${GIT_CURRENT_COMMIT}").tokenize()
+                    
+                    def changed_files = sh(returnStdout: true, script: "git show --pretty=format: --name-only ${current_commit}").tokenize()
                     for (int i = 0; i < changed_files.size(); i++) {
                         def cfile = changed_files[i]
                         echo "Changed: " + cfile
@@ -62,33 +53,7 @@ pipeline {
                 sh "deploypkg -m -r ${REPO}-testing -t ${REPO}"
             }
         }
-        stage('Stable') {
-            environment {
-                BUILDBOT_GPGP = credentials('BUILDBOT_GPGP')
-            }
-            when {
-                branch 'master'
-                expression { return  IS_MOVE == 'false' }
-            }
-            steps {
-                echo "PACKAGES: ${PACKAGES}"
-                script {
-                    for (pkg in PACKAGES) {
-                        sh "buildpkg -p ${pkg} -z ${REPO}"
-                    }
-                }
-            }
-            post {
-                success {
-                    script {
-                        for (pkg in PACKAGES) {
-                            sh "deploypkg -x -p ${pkg} -r ${REPO}"
-                        }
-                    }
-                }
-            }
-        }
-        stage('Testing') {
+        stage('Build') {
             environment {
                 BUILDBOT_GPGP = credentials('BUILDBOT_GPGP')
             }
