@@ -53,7 +53,7 @@ prepare() {
 
 build() {
   cd ${pkgbase}-${pkgver}
-  +  # use fixed cups user (id 209) since sysusers adds "lp" group without a fixed id
+  # use fixed cups user (id 209) since sysusers adds "lp" group without a fixed id
   ./configure --prefix=/usr \
      --sysconfdir=/etc \
      --localstatedir=/var \
