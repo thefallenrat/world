@@ -1,10 +1,10 @@
 # Maintainer: artoo <artoo@cromnix.org>
-# Maintainer: Andreas Radke <andyrtr@archlinux.org>
+# Contributor: Andreas Radke <andyrtr@archlinux.org>
 
 pkgbase="cups"
 pkgname=('libcups' 'cups')
 pkgver=2.2.6
-pkgrel=3
+pkgrel=4
 arch=('x86_64')
 license=('GPL')
 url="https://www.cups.org/"
@@ -13,7 +13,7 @@ makedepends=('libtiff' 'libpng' 'acl' 'pam' 'xdg-utils' 'krb5' 'gnutls'
              'avahi'  'hicolor-icon-theme' 'eudev' 'inetutils' 'libpaper' 'valgrind')
 source=(https://github.com/apple/cups/releases/download/v${pkgver}/cups-${pkgver}-source.tar.gz{,.sig}
         cups.logrotate cups.pam
-        cups.sysusers
+        cups.sysusers guid.patch
         # improve build and linking
         cups-no-export-ssllibs.patch
         cups-no-gzip-man.patch
@@ -24,6 +24,7 @@ sha256sums=('40385778c2b3bdf55030d1c999734e22774c79e3425d91339ce677825620169b'
             'd87fa0f0b5ec677aae34668f260333db17ce303aa1a752cba5f8e72623d9acf9'
             '57dfd072fd7ef0018c6b0a798367aac1abb5979060ff3f9df22d1048bb71c0d5'
             '06173dfaea37bdd9b39b3e09aba98c34ae7112a2f521db45a688907d8848caa2'
+            'd4537526c1e075866ae22ad263da000fc2a592d36c26b79a459a1cfdade2bb2d'
             'ff3eb0782af0405f5dafe89e04b1b4ea7a49afc5496860d724343bd04f375832'
             'b8fc2e3bc603495f0278410350ea8f0161d9d83719feb64f573b63430cb4800b'
             '23349c96f2f7aeb7d48e3bcd35a969f5d5ac8f55a032b0cfaa0a03d7e37ea9af')
@@ -40,6 +41,9 @@ prepare() {
   patch -Np1 -i ${srcdir}/cups-no-gzip-man.patch
   # move /var/run -> /run for pid file
   patch -Np1 -i ${srcdir}/cups-1.6.2-statedir.patch
+
+  # FS#56818 - https://github.com/apple/cups/issues/5236
+  patch -Np1 -i ${srcdir}/guid.patch
 
   # set MaxLogSize to 0 to prevent using cups internal log rotation
   sed -i -e '5i\ ' conf/cupsd.conf.in
@@ -124,7 +128,8 @@ optdepends=('xdg-utils: xdg .desktop file support'
   # fix perms on /var/spool and /etc
   chmod 755 ${pkgdir}/var/spool
   chmod 755 ${pkgdir}/etc
-  
+
+
   # use cups group FS#36769
   install -Dm644 "$srcdir"/cups.sysusers "${pkgdir}/usr/lib/sysusers.d/$pkgname.conf"
   sed -i "s:#User 209:User 209:" ${pkgdir}/etc/cups/cups-files.conf{,.default}
@@ -138,7 +143,7 @@ optdepends=('xdg-utils: xdg .desktop file support'
   # install some more configuration files that will get filled by cupsd
   touch ${pkgdir}/etc/cups/printers.conf
   touch ${pkgdir}/etc/cups/classes.conf
-  
+
   touch ${pkgdir}/etc/cups/subscriptions.conf
   chgrp -R 209 ${pkgdir}/etc/cups
 
