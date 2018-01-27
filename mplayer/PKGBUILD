@@ -16,7 +16,7 @@ makedepends=('libxxf86dga' 'libmad' 'libxinerama' 'libmng' 'libxss' 'smbclient' 
              'mesa' 'live-media' 'yasm' 'git' 'mpg123' 'ladspa' 'libcdio-paranoia' 'subversion'
              'x264' 'libx264' 'rtmpdump' 'libdvdcss' 'libdvdread' 'libdvdnav' 'ffmpeg')
 options=('!emptydirs')
-source=(${pkgbase}-${pkgver}::"svn://svn.mplayerhq.hu/mplayer/trunk#revision=${pkgver}"
+source=(${pkgbase}-${pkgver}.tar.bz2::"http://www.mplayerhq.hu/MPlayer/releases/mplayer-checkout-snapshot.tar.bz2"
         mplayer.desktop
         include-samba-4.0.patch
         revert-icl-fixes.patch)
@@ -26,14 +26,15 @@ sha512sums=('SKIP'
             '0cae0b26d3d97fd4c962962c43a481de20335369cbca406cadfc9bda1a0608b32f5374e76c477cb9a85bda83a568a1ed17126df224ae61579d0a402c1824aea8')
 
 prepare() {
-  cd ${pkgbase}-${pkgver}
+  cd ${pkgbase}-checkout*
+  svn update -r ${pkgver}
   patch -p1 < "../include-samba-4.0.patch"
   patch -p0 < "../revert-icl-fixes.patch"
   ./version.sh
 }
 
 build() {
-  cd ${pkgbase}-${pkgver}
+  cd ${pkgbase}-checkout*
   export CFLAGS="${CFLAGS/-march=x86-64/}"
   export CFLAGS="${CFLAGS/-mtune=generic/}"
   export LDFLAGS="${LDFLAGS/,O1/}"
@@ -72,7 +73,7 @@ package_mplayer() {
            'jack' 'libmad' 'libcaca' 'libxxf86dga' 'faac' 'faad2' 'libxvmc' 'mpg123'
            'libcdio-paranoia' 'rtmpdump' 'libdvdnav' 'ffmpeg')
 
-  cd ${pkgbase}-${pkgver}
+  cd ${pkgbase}-checkout*
   make DESTDIR="${pkgdir}" install-mplayer install-mplayer-man
 
   install -Dm 644 etc/{codecs.conf,input.conf,example.conf} "${pkgdir}/etc/mplayer"
@@ -85,7 +86,8 @@ package_mencoder() {
   depends=('enca' 'a52dec' 'libvpx' 'libx264' 'libmng' 'libdca' 'smbclient' 'libmad'
            'faac' 'faad2' 'mpg123' 'libcdio-paranoia' 'rtmpdump' 'libdvdnav' 'ffmpeg')
 
-  make -C ${pkgbase}-${pkgver} DESTDIR="${pkgdir}" install-mencoder install-mencoder-man
+  cd ${pkgbase}-checkout*
+  make DESTDIR="${pkgdir}" install-mencoder install-mencoder-man
   find "${pkgdir}/usr/share/man" -name mplayer.1 -exec rename mplayer.1 mencoder.1 {} +
 }
 
