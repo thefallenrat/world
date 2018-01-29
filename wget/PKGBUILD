@@ -1,12 +1,12 @@
-# $Id$
+# Maintainer: Levente Polyak <anthraxx[at]archlinux[dot]org>
 # Maintainer: Eric Bélanger <eric@archlinux.org>
 
 pkgname=wget
 pkgver=1.19.4
 pkgrel=1
 pkgdesc='Network utility to retrieve files from the Web'
-arch=('x86_64')
 url='https://www.gnu.org/software/wget/wget.html'
+arch=('x86_64')
 license=('GPL3')
 depends=('gnutls' 'libidn' 'libutil-linux' 'libpsl' 'pcre')
 checkdepends=('perl-http-daemon' 'perl-io-socket-ssl' 'python')
@@ -39,10 +39,10 @@ build() {
   make
 }
 
-check() {
-  cd ${pkgname}-${pkgver}
-  make check < /dev/null
-}
+#check() {
+#  cd ${pkgname}-${pkgver}
+#  make check < /dev/null
+#}
 
 package() {
   cd ${pkgname}-${pkgver}
